@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Mi equipo · GlaciAR</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0e2a3a;--mut:#5b7685;--bg:#f2f8fb;--card:#fff;--line:#cfe0e8;--blue:#0b6e99;--err:#b3261e;--ok:#1b7a3d}
+@media (prefers-color-scheme:dark){:root{--ink:#e6f2f7;--mut:#8fb0c0;--bg:#0b1a23;--card:#12262f;--line:#244454;--blue:#4fb3dc;--err:#ff8a80;--ok:#7fd69a}}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 Manrope,system-ui,sans-serif}
+header{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line);color:var(--blue);font-weight:800;font-size:1.2rem}
+main{max-width:620px;margin:0 auto;padding:16px}
+h1{font-size:1.5rem;margin:8px 0 4px}h2{font-size:1.1rem;margin:0 0 4px}h3{font-size:1rem;margin:22px 0 6px}
+.mut{color:var(--mut);font-size:.92rem;margin:2px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:14px 0}
+.gar{font-weight:800;color:var(--blue);margin:8px 0 0}.gar.off{color:var(--err)}
+.vis{border-left:3px solid var(--blue);padding:2px 0 2px 12px;margin:12px 0}
+.debe{color:var(--err)}.ok{color:var(--ok);font-weight:600}
+label{display:block;font-size:.9rem;font-weight:600;margin:12px 0 4px}
+select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+textarea{min-height:90px}
+select:focus,textarea:focus,button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+button,a.btn{display:inline-block;font:inherit;font-weight:600;border:0;border-radius:8px;padding:12px 18px;background:var(--blue);color:#fff;cursor:pointer;margin-top:14px;text-decoration:none}
+@media (prefers-color-scheme:dark){button,a.btn{color:#06222e}}
+button:disabled{opacity:.6}
+.err{color:var(--err);margin:8px 0 0}
+</style>
+</head>
+<body>
+<header><svg width="28" height="28" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="16" cy="16" r="14"/><path d="M16 7v18M8.2 11.5l15.6 9M23.8 11.5l-15.6 9"/></svg>GlaciAR</header>
+<main id="app"><p class="mut">Cargando…</p></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+const sb = supabase.createClient(
+  'https://kscqvfnolitxbhfccagf.supabase.co',
+  'sb_publishable_jTWYlXZEocDG88PM_fnSSg_62XFAha9',
+  { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } }
+);
+const WA = '5491135630466';
+const app = document.getElementById('app');
+const tok = new URLSearchParams(location.search).get('c');
+let D = null;
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = d => d ? d.split('-').reverse().join('/') : '—';
+const $m = n => '$' + Number(n || 0).toLocaleString('es-AR');
+const debe = v => (Number(v.monto) || 0) - (Number(v.pagado) || 0);
+const TIPOS = ['Pedir turno de mantenimiento', 'El equipo no enfría', 'Pierde agua', 'Hace ruido o vibra', 'Otro problema'];
+
+function garantia(f) {
+  if (!f) return null;
+  const [y, m, d] = f.split('-').map(Number);
+  const h = new Date(); h.setHours(0, 0, 0, 0);
+  const left = 15 - Math.round((h - new Date(y, m - 1, d)) / 864e5);
+  if (left > 0) return { txt: `Día(s) de garantía: ${left} día(s)`, off: false };
+  if (left === 0) return { txt: 'Tu garantía vence hoy', off: false };
+  return { txt: 'Garantía vencida', off: true };
+}
+
+function malLink() {
+  app.innerHTML = `<h1>Este link no es válido</h1><p class="mut">Puede que esté mal copiado o que haya sido reemplazado. Pedile uno nuevo a GlaciAR por WhatsApp.</p><a class="btn" href="https://wa.me/${WA}" target="_blank" rel="noopener">Escribir a GlaciAR</a>`;
+}
+
+function visita(v) {
+  const l = [`<b>${fmt(v.fecha)}</b>`, esc(v.trabajo_hecho || 'Sin detalle')];
+  if (v.pendiente) l.push(`<span class="mut">Recomendado o pendiente: ${esc(v.pendiente)}</span>`);
+  if (v.repuestos) l.push(`<span class="mut">Repuestos: ${esc(v.repuestos)}</span>`);
+  if (v.temp_ambiente != null || v.temp_salida != null) {
+    const t = [];
+    if (v.temp_ambiente != null) t.push(`ambiente ${v.temp_ambiente} °C`);
+    if (v.temp_salida != null) t.push(`aire que sale del equipo ${v.temp_salida} °C`);
+    l.push(`<span class="mut">Temperaturas medidas: ${t.join(', ')}</span>`);
+  }
+  if (v.monto != null || v.pagado != null) {
+    const d = debe(v);
+    l.push(`<span class="mut">Total ${$m(v.monto)} · Pagado ${$m(v.pagado)} · </span>` + (d > 0 ? `<b class="debe">Debe ${$m(d)}</b>` : '<span class="ok">Saldado</span>'));
+  }
+  return `<div class="vis">${l.join('<br>')}</div>`;
+}
+
+function render(d) {
+  D = d;
+  const todas = d.equipos.flatMap(e => e.visitas);
+  const deuda = todas.reduce((a, v) => a + debe(v), 0);
+  const resumen = deuda > 0 ? `<div class="card"><h2 class="debe">Saldo pendiente: ${$m(deuda)}</h2><p class="mut">Podés coordinar el pago escribiéndonos por WhatsApp.</p></div>`
+    : todas.some(v => v.monto != null) ? '<div class="card"><h2 class="ok">Estás al día con tus pagos</h2></div>' : '';
+  const equipos = d.equipos.map(e => {
+    const g = garantia([e.fecha_instalacion, e.ultimo_mantenimiento].filter(Boolean).sort().pop());
+    return `<div class="card"><h2>${esc([e.marca, e.modelo].filter(Boolean).join(' ') || 'Equipo')}</h2>
+    <p class="mut">${esc([e.tipo, e.frigorias ? e.frigorias + ' frigorías' : null, e.gas].filter(Boolean).join(' · '))}</p>
+    <p class="mut">Instalado: ${fmt(e.fecha_instalacion)} · Último mantenimiento: ${fmt(e.ultimo_mantenimiento)}</p>
+    ${g ? `<p class="gar ${g.off ? 'off' : ''}">${g.txt}</p>` : ''}
+    <h3>Historial de visitas</h3>${e.visitas.map(visita).join('') || '<p class="mut">Todavía no hay visitas registradas.</p>'}</div>`;
+  }).join('') || '<p class="mut">Todavía no hay equipos registrados.</p>';
+  const opts = d.equipos.length > 1 ? `<label for="equipo">¿Qué equipo?</label><select id="equipo" name="equipo">${d.equipos.map(e => `<option>${esc([e.marca, e.modelo].filter(Boolean).join(' ') || 'Equipo')}</option>`).join('')}</select>` : '';
+  app.innerHTML = `<h1>Hola, ${esc(d.nombre)}</h1><p class="mut">Acá ves el estado de tu equipo y lo que se le hizo.</p>
+  ${resumen}${equipos}
+  <div class="card" id="pedido"><h2>Pedir turno o avisar un problema</h2>
+  <form onsubmit="enviar(event)">${opts}
+  <label for="tipo">¿Qué necesitás?</label><select id="tipo" name="tipo">${TIPOS.map(t => `<option>${t}</option>`).join('')}</select>
+  <label for="mensaje">Contanos un poco más (opcional)</label><textarea id="mensaje" name="mensaje" maxlength="400"></textarea>
+  <p class="err" id="err"></p><button id="btn">Enviar pedido</button></form></div>`;
+}
+
+async function enviar(e) {
+  e.preventDefault();
+  const f = e.target, tipo = f.tipo.value, msg = f.mensaje.value.trim();
+  const texto = [f.equipo ? 'Equipo: ' + f.equipo.value : '', msg].filter(Boolean).join('. ');
+  document.getElementById('btn').disabled = true;
+  const { data, error } = await sb.rpc('cliente_pedido', { p_token: tok, p_tipo: tipo, p_mensaje: texto });
+  if (error || !data) {
+    document.getElementById('err').textContent = 'No se pudo enviar. Probá de nuevo o escribinos por WhatsApp.';
+    document.getElementById('btn').disabled = false;
+    return;
+  }
+  const wa = 'https://wa.me/' + WA + '?text=' + encodeURIComponent(`Hola GlaciAR, soy ${D.nombre}. ${tipo}.${texto ? ' ' + texto : ''}`);
+  document.getElementById('pedido').innerHTML = `<h2 class="ok">Recibimos tu pedido</h2><p>Para que te respondamos más rápido, avisanos también por WhatsApp.</p><a class="btn" href="${wa}" target="_blank" rel="noopener">Avisar por WhatsApp</a>`;
+}
+
+(async () => {
+  if (!tok) return malLink();
+  const { data, error } = await sb.rpc('cliente_ficha', { p_token: tok });
+  if (error || !data) return malLink();
+  render(data);
+})();
+</script>
+</body>
+</html>

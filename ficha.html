@@ -101,9 +101,11 @@ async function clientes() {
   if (error) { app.innerHTML = barra('Clientes') + `<main><p class="err">${esc(error.message)}</p></main>`; return; }
   const dv = (await sb.from('visitas').select('monto,pagado,equipos(cliente_id)')).data || [], deuda = {};
   dv.forEach(v => { const k = v.equipos && v.equipos.cliente_id; if (k) deuda[k] = (deuda[k] || 0) + debe(v); });
+  const pe = (await sb.from('pedidos').select('id,created_at,tipo,mensaje,clientes(id,nombre)').eq('estado', 'nuevo').order('created_at', { ascending: false })).data || [];
   const total = Object.values(deuda).reduce((a, b) => a + Math.max(0, b), 0);
   app.innerHTML = barra('Clientes') + `<main>
   ${total > 0 ? `<p class="gar off">Te deben en total: ${$m(total)}</p>` : ''}
+  ${pe.length ? `<h4>Pedidos nuevos (${pe.length})</h4>` + pe.map(p => `<div class="card"><b>${esc(p.clientes ? p.clientes.nombre : 'Cliente')}</b> · ${esc(p.tipo)}<br><small>${new Date(p.created_at).toLocaleString('es-AR')}</small>${p.mensaje ? `<p>${esc(p.mensaje)}</p>` : ''}${p.clientes ? `<button type="button" class="ghost" onclick="cliente(${p.clientes.id})">Ver cliente</button>` : ''}<button type="button" onclick="resolver(${p.id})">Marcar como resuelto</button></div>`).join('') : ''}
   <input id="q" type="search" placeholder="Buscar por nombre, teléfono o dirección">
   <div id="list"></div>
   <details open><summary>Nuevo cliente</summary>
@@ -172,6 +174,22 @@ async function exportar() {
   XLSX.writeFile(wb, 'glaciar-respaldo-' + hoy() + '.xlsx');
 }
 
+async function copiarLink(t) {
+  const url = new URL('cliente.html?c=' + t, location.href).href;
+  try { await navigator.clipboard.writeText(url); alert('Link copiado'); } catch (e) { prompt('Copiá este link:', url); }
+}
+async function nuevoLink(id) {
+  if (!confirm('El link anterior deja de funcionar. ¿Generar uno nuevo?')) return;
+  const { error } = await sb.from('clientes').update({ token: crypto.randomUUID() }).eq('id', id);
+  if (error) return alert(error.message);
+  cliente(id);
+}
+async function resolver(id) {
+  const { error } = await sb.from('pedidos').update({ estado: 'resuelto' }).eq('id', id);
+  if (error) return alert(error.message);
+  clientes();
+}
+
 function garantia(f) {
   if (!f) return null;
   const [y, m, d] = f.split('-').map(Number);
@@ -185,6 +203,7 @@ function garantia(f) {
 async function cliente(id) {
   const { data: c, error } = await sb.from('clientes').select('*, equipos(*)').eq('id', id).single();
   if (error) return alert(error.message);
+  const link = new URL('cliente.html?c=' + c.token, location.href).href;
   const ids = c.equipos.map(q => q.id);
   let vis = [], fotos = [], urls = {};
   if (ids.length) {
@@ -218,6 +237,7 @@ async function cliente(id) {
   <p>${c.telefono ? `<a class="btn" href="tel:${esc(c.telefono)}">Llamar</a><a class="btn" target="_blank" rel="noopener" href="${wa(c.telefono)}">WhatsApp</a>` : ''}${c.direccion ? `<a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(c.direccion)}">Cómo llegar</a>` : ''}</p>
   ${(() => { const d = vis.reduce((a, v) => a + debe(v), 0); return d > 0 ? `<p class="gar off">Debe en total: ${$m(d)}</p>` : ''; })()}
   ${c.notas ? `<p>${esc(c.notas)}</p>` : ''}
+  <p>${c.telefono ? `<a class="btn" target="_blank" rel="noopener" href="${wa(c.telefono)}?text=${encodeURIComponent('Hola ' + c.nombre + '! Acá podés ver el estado de tu equipo de GlaciAR y pedir turno: ' + link)}">Enviar link al cliente</a>` : ''}<button type="button" class="ghost" onclick="copiarLink('${c.token}')">Copiar link</button><button type="button" class="ghost" onclick="nuevoLink(${c.id})">Generar link nuevo</button></p>
   <details><summary>Editar o borrar cliente</summary>
   <form onsubmit="upCliente(event,${c.id})">${campos.cliente(c)}<button>Guardar cambios</button><button type="button" class="del" onclick="borrar('clientes',${c.id},0,'¿Borrar a este cliente con todos sus equipos, visitas y fotos?')">Eliminar cliente</button></form></details>
   <h4>Equipos</h4>${equipos || '<p class="meta">Este cliente no tiene equipos cargados.</p>'}
