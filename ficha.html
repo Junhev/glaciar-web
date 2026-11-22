@@ -41,11 +41,25 @@ summary{cursor:pointer;font-weight:600;color:var(--blue)}
 .chk{display:flex;gap:8px;align-items:center;font-weight:400}.chk input{width:auto}
 h4{margin:20px 0 0;font-size:1rem}
 a{color:var(--blue)}
+.btn{display:inline-block;font-weight:600;border-radius:8px;padding:8px 14px;background:var(--blue);color:#fff;cursor:pointer;margin:10px 0 0}
+@media (prefers-color-scheme:dark){.btn{color:#06222e}}
+button.del{background:none;color:var(--err);border:1px solid var(--err);margin-left:8px}
+button.del:hover{background:var(--tag)}
+.gar{font-weight:800;margin:8px 0 0;color:var(--blue)}.gar.off{color:var(--err)}
+.fotos{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.f{position:relative}.f img{width:96px;height:96px;object-fit:cover;border-radius:8px;border:1px solid var(--line);display:block}
+.x{position:absolute;top:2px;right:2px;margin:0;padding:0 7px;line-height:22px;border-radius:50%;background:rgba(0,0,0,.65);color:#fff}
+details.mini{margin:6px 0 0;padding-top:6px}
+details.mini summary{font-weight:400;font-size:.85rem}
+a.btn{text-decoration:none;margin-right:8px}
+.item span.debe{color:var(--err);font-weight:800;margin-left:8px}
+b.debe{color:var(--err)}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
 const sb = supabase.createClient(
   'https://kscqvfnolitxbhfccagf.supabase.co',
@@ -75,7 +89,7 @@ function login() {
     e.preventDefault();
     const f = e.target;
     const { error } = await sb.auth.signInWithPassword({ email: f.email.value.trim(), password: f.pw.value });
-    if (error) { document.getElementById('err').textContent = 'Email o contraseña incorrectos.'; return; }
+    if (error) { document.getElementById('err').textContent = 'No se pudo entrar: ' + error.message; return; }
     clientes();
   };
 }
@@ -85,7 +99,11 @@ async function salir() { await sb.auth.signOut(); login(); }
 async function clientes() {
   const { data, error } = await sb.from('clientes').select('id,nombre,telefono,direccion').order('nombre');
   if (error) { app.innerHTML = barra('Clientes') + `<main><p class="err">${esc(error.message)}</p></main>`; return; }
+  const dv = (await sb.from('visitas').select('monto,pagado,equipos(cliente_id)')).data || [], deuda = {};
+  dv.forEach(v => { const k = v.equipos && v.equipos.cliente_id; if (k) deuda[k] = (deuda[k] || 0) + debe(v); });
+  const total = Object.values(deuda).reduce((a, b) => a + Math.max(0, b), 0);
   app.innerHTML = barra('Clientes') + `<main>
+  ${total > 0 ? `<p class="gar off">Te deben en total: ${$m(total)}</p>` : ''}
   <input id="q" type="search" placeholder="Buscar por nombre, teléfono o dirección">
   <div id="list"></div>
   <details open><summary>Nuevo cliente</summary>
@@ -94,12 +112,13 @@ async function clientes() {
     <div class="row"><label>Teléfono<input name="telefono" type="tel"></label>
     <label>Dirección<input name="direccion"></label></div>
     <label>Notas<textarea name="notas"></textarea></label>
-    <button>Guardar cliente</button></form></details></main>`;
+    <button>Guardar cliente</button></form></details>
+  <button type="button" class="ghost" onclick="exportar()">Exportar todo a Excel (respaldo)</button></main>`;
   const list = document.getElementById('list');
   const pintar = () => {
     const q = document.getElementById('q').value.toLowerCase();
     const r = data.filter(c => [c.nombre, c.telefono, c.direccion].join(' ').toLowerCase().includes(q));
-    list.innerHTML = r.length ? r.map(c => `<button class="item" onclick="cliente(${c.id})"><b>${esc(c.nombre)}</b><span>${esc([c.telefono, c.direccion].filter(Boolean).join(' · '))}</span></button>`).join('')
+    list.innerHTML = r.length ? r.map(c => `<button class="item" onclick="cliente(${c.id})"><b>${esc(c.nombre)}</b><span>${esc([c.telefono, c.direccion].filter(Boolean).join(' · '))}</span>${deuda[c.id] > 0 ? `<span class="debe">Debe ${$m(deuda[c.id])}</span>` : ''}</button>`).join('')
       : '<p class="meta">Todavía no hay clientes. Cargá el primero abajo.</p>';
   };
   document.getElementById('q').oninput = pintar;
@@ -114,64 +133,167 @@ async function addCliente(e) {
   cliente(data.id);
 }
 
+const CF=['nombre','telefono','direccion','notas'],EF=['marca','modelo','tipo','frigorias','gas','fecha_instalacion','ultimo_mantenimiento'],VF=['fecha','trabajo_hecho','pendiente','notas','repuestos','costo_repuestos','monto','pagado'];
+const datos=(f,l)=>Object.fromEntries(l.map(n=>[n,val(f,n)]));
+const opt=(l,v)=>'<option value="">—</option>'+l.map(x=>`<option${x===v?' selected':''}>${x}</option>`).join('');
+const campos={
+  cliente:c=>`<label>Nombre<input name="nombre" required value="${esc(c.nombre)}"></label><div class="row"><label>Teléfono<input name="telefono" type="tel" value="${esc(c.telefono)}"></label><label>Dirección<input name="direccion" value="${esc(c.direccion)}"></label></div><label>Notas<textarea name="notas">${esc(c.notas)}</textarea></label>`,
+  equipo:q=>`<div class="row"><label>Marca<input name="marca" value="${esc(q.marca)}"></label><label>Modelo<input name="modelo" value="${esc(q.modelo)}"></label></div><div class="row"><label>Tipo<select name="tipo">${opt(['Split','Inverter','Ventana','Portátil','Otro'],q.tipo)}</select></label><label>Frigorías<input name="frigorias" type="number" inputmode="numeric" min="0" value="${esc(q.frigorias)}"></label></div><div class="row"><label>Gas<select name="gas">${opt(['R410A','R32','R22','Otro'],q.gas)}</select></label><label>Instalación (desde acá cuenta la garantía)<input name="fecha_instalacion" type="date" value="${esc(q.fecha_instalacion)}"></label></div><label>Último mantenimiento<input name="ultimo_mantenimiento" type="date" value="${esc(q.ultimo_mantenimiento)}"></label>`,
+  visita:v=>`<label>Fecha<input name="fecha" type="date" required value="${esc(v.fecha)}"></label><label>Trabajo hecho<textarea name="trabajo_hecho" required>${esc(v.trabajo_hecho)}</textarea></label><label>Qué falta o recomiendo<input name="pendiente" value="${esc(v.pendiente)}"></label><label>Notas<input name="notas" value="${esc(v.notas)}"></label><label>Repuestos usados<input name="repuestos" value="${esc(v.repuestos)}"></label><div class="row"><label>Costo de repuestos ($)<input name="costo_repuestos" type="number" inputmode="decimal" min="0" step="any" value="${esc(v.costo_repuestos)}"></label><label>Monto a cobrar ($)<input name="monto" type="number" inputmode="decimal" min="0" step="any" value="${esc(v.monto)}"></label></div><label>Pagado ($)<input name="pagado" type="number" inputmode="decimal" min="0" step="any" value="${esc(v.pagado)}"></label>`
+};
+
+const $m = n => '$' + Number(n || 0).toLocaleString('es-AR');
+const debe = v => (Number(v.monto) || 0) - (Number(v.pagado) || 0);
+function cobro(v) {
+  const l = [];
+  if (v.repuestos || v.costo_repuestos) l.push(`Repuestos: ${esc(v.repuestos || '')}${v.costo_repuestos ? ' (costo ' + $m(v.costo_repuestos) + ')' : ''}`);
+  if (v.monto != null || v.pagado != null) { const d = debe(v); l.push(`Cobro ${$m(v.monto)} · Pagado ${$m(v.pagado)} · ` + (d > 0 ? `<b class="debe">Debe ${$m(d)}</b>` : 'Saldado')); }
+  return l.length ? '<br><small>' + l.join('<br>') + '</small>' : '';
+}
+function wa(t) {
+  let d = String(t).replace(/\D/g, '').replace(/^0+/, '');
+  if (!d.startsWith('54')) d = '54' + (d.startsWith('9') ? '' : '9') + d;
+  return 'https://wa.me/' + d;
+}
+async function exportar() {
+  const wb = XLSX.utils.book_new();
+  for (const t of ['clientes', 'equipos', 'visitas']) {
+    const { data, error } = await sb.from(t).select('*').order('id');
+    if (error) return alert(error.message);
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(data), t);
+  }
+  XLSX.writeFile(wb, 'glaciar-respaldo-' + hoy() + '.xlsx');
+}
+
+function garantia(f) {
+  if (!f) return null;
+  const [y, m, d] = f.split('-').map(Number);
+  const h = new Date(); h.setHours(0, 0, 0, 0);
+  const left = 15 - Math.round((h - new Date(y, m - 1, d)) / 864e5);
+  if (left > 0) return { txt: `Día(s) de garantía: ${left} día(s)`, cls: '' };
+  if (left === 0) return { txt: 'Garantía: vence hoy', cls: '' };
+  return { txt: 'Garantía vencida', cls: 'off' };
+}
+
 async function cliente(id) {
   const { data: c, error } = await sb.from('clientes').select('*, equipos(*)').eq('id', id).single();
   if (error) return alert(error.message);
   const ids = c.equipos.map(q => q.id);
-  let vis = [];
+  let vis = [], fotos = [], urls = {};
   if (ids.length) {
-    const r = await sb.from('visitas').select('*').in('equipo_id', ids).order('fecha', { ascending: false });
-    vis = r.data || [];
+    vis = (await sb.from('visitas').select('*').in('equipo_id', ids).order('fecha', { ascending: false })).data || [];
+    fotos = (await sb.from('fotos').select('*').in('equipo_id', ids).order('created_at')).data || [];
+    if (fotos.length) {
+      const r = await sb.storage.from('fotos').createSignedUrls(fotos.map(x => x.path), 3600);
+      (r.data || []).forEach(x => urls[x.path] = x.signedUrl);
+    }
   }
   const equipos = c.equipos.map(q => {
-    const vs = vis.filter(v => v.equipo_id === q.id);
+    const vs = vis.filter(v => v.equipo_id === q.id), fs = fotos.filter(x => x.equipo_id === q.id), g = garantia(q.fecha_instalacion);
     return `<div class="card"><h3>${esc([q.marca, q.modelo].filter(Boolean).join(' ') || 'Equipo sin nombre')}</h3>
     <p class="meta">${esc([q.tipo, q.frigorias ? q.frigorias + ' frigorías' : null, q.gas].filter(Boolean).join(' · '))}</p>
     <p class="meta">Instalado: ${fmt(q.fecha_instalacion)} · Último mantenimiento: ${fmt(q.ultimo_mantenimiento)}</p>
-    ${vs.map(v => `<div class="vis"><small>${fmt(v.fecha)}</small><br>${esc(v.trabajo_hecho || 'Sin detalle')}${v.pendiente ? `<br><small>Falta: ${esc(v.pendiente)}</small>` : ''}${v.notas ? `<br><small>${esc(v.notas)}</small>` : ''}</div>`).join('') || '<p class="meta">Sin visitas cargadas.</p>'}
+    ${g ? `<p class="gar ${g.cls}">${g.txt}</p>` : ''}
+    <div class="fotos">${fs.map(x => `<div class="f"><a href="${urls[x.path] || '#'}" target="_blank" rel="noopener"><img src="${urls[x.path] || ''}" alt="Foto del equipo" loading="lazy"></a><button type="button" class="x" aria-label="Borrar foto" onclick="delFoto(${x.id},'${x.path}',${c.id})">×</button></div>`).join('')}</div>
+    <label class="btn">Subir fotos<input type="file" accept="image/*" multiple hidden onchange="subir(this,${q.id},${c.id})"></label>
+    <h4>Visitas</h4>
+    ${vs.map(v => `<div class="vis"><small>${fmt(v.fecha)}</small><br>${esc(v.trabajo_hecho || 'Sin detalle')}${v.pendiente ? `<br><small>Falta: ${esc(v.pendiente)}</small>` : ''}${v.notas ? `<br><small>${esc(v.notas)}</small>` : ''}${cobro(v)}
+      <details class="mini"><summary>Editar o borrar</summary><form onsubmit="upVisita(event,${v.id},${c.id})">${campos.visita(v)}<button>Guardar cambios</button><button type="button" class="del" onclick="borrar('visitas',${v.id},${c.id},'¿Borrar esta visita?')">Borrar</button></form></details></div>`).join('') || '<p class="meta">Sin visitas cargadas.</p>'}
     <details><summary>Cargar visita</summary>
-    <form onsubmit="addVisita(event,${q.id},${c.id})">
-      <label>Fecha<input name="fecha" type="date" value="${hoy()}" required></label>
-      <label>Trabajo hecho<textarea name="trabajo_hecho" required></textarea></label>
-      <label>Qué falta o recomiendo<input name="pendiente"></label>
-      <label>Notas<input name="notas"></label>
+    <form onsubmit="addVisita(event,${q.id},${c.id})">${campos.visita({ fecha: hoy() })}
       <label class="chk"><input type="checkbox" name="mant"> Fue mantenimiento (actualiza la fecha del equipo)</label>
-      <button>Guardar visita</button></form></details></div>`;
+      <button>Guardar visita</button></form></details>
+    <details><summary>Editar o borrar equipo</summary>
+    <form onsubmit="upEquipo(event,${q.id},${c.id})">${campos.equipo(q)}<button>Guardar cambios</button><button type="button" class="del" onclick="borrar('equipos',${q.id},${c.id},'¿Borrar este equipo con sus visitas y fotos?')">Eliminar equipo</button></form></details></div>`;
   }).join('');
   app.innerHTML = barra(c.nombre, 'clientes()') + `<main>
-  <p class="meta">${c.telefono ? `<a href="tel:${esc(c.telefono)}">${esc(c.telefono)}</a>` : 'Sin teléfono'}${c.direccion ? ' · ' + esc(c.direccion) : ''}</p>
+  <p class="meta">${esc([c.telefono, c.direccion].filter(Boolean).join(' · ') || 'Sin teléfono ni dirección')}</p>
+  <p>${c.telefono ? `<a class="btn" href="tel:${esc(c.telefono)}">Llamar</a><a class="btn" target="_blank" rel="noopener" href="${wa(c.telefono)}">WhatsApp</a>` : ''}${c.direccion ? `<a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(c.direccion)}">Cómo llegar</a>` : ''}</p>
+  ${(() => { const d = vis.reduce((a, v) => a + debe(v), 0); return d > 0 ? `<p class="gar off">Debe en total: ${$m(d)}</p>` : ''; })()}
   ${c.notas ? `<p>${esc(c.notas)}</p>` : ''}
+  <details><summary>Editar o borrar cliente</summary>
+  <form onsubmit="upCliente(event,${c.id})">${campos.cliente(c)}<button>Guardar cambios</button><button type="button" class="del" onclick="borrar('clientes',${c.id},0,'¿Borrar a este cliente con todos sus equipos, visitas y fotos?')">Eliminar cliente</button></form></details>
   <h4>Equipos</h4>${equipos || '<p class="meta">Este cliente no tiene equipos cargados.</p>'}
   <details ${c.equipos.length ? '' : 'open'}><summary>Agregar equipo</summary>
-  <form onsubmit="addEquipo(event,${c.id})">
-    <div class="row"><label>Marca<input name="marca"></label><label>Modelo<input name="modelo"></label></div>
-    <div class="row"><label>Tipo<select name="tipo"><option value="">—</option><option>Split</option><option>Inverter</option><option>Ventana</option><option>Portátil</option><option>Otro</option></select></label>
-    <label>Frigorías<input name="frigorias" type="number" inputmode="numeric" min="0"></label></div>
-    <div class="row"><label>Gas<select name="gas"><option value="">—</option><option>R410A</option><option>R32</option><option>R22</option><option>Otro</option></select></label>
-    <label>Instalación<input name="fecha_instalacion" type="date"></label></div>
-    <label>Último mantenimiento<input name="ultimo_mantenimiento" type="date"></label>
-    <button>Guardar equipo</button></form></details></main>`;
+  <form onsubmit="addEquipo(event,${c.id})">${campos.equipo({})}<button>Guardar equipo</button></form></details></main>`;
 }
 
 async function addEquipo(e, cid) {
   e.preventDefault();
-  const f = e.target;
-  const { error } = await sb.from('equipos').insert({
-    cliente_id: cid, marca: val(f, 'marca'), modelo: val(f, 'modelo'), tipo: val(f, 'tipo'),
-    frigorias: val(f, 'frigorias'), gas: val(f, 'gas'),
-    fecha_instalacion: val(f, 'fecha_instalacion'), ultimo_mantenimiento: val(f, 'ultimo_mantenimiento')
-  });
+  const { error } = await sb.from('equipos').insert({ cliente_id: cid, ...datos(e.target, EF) });
   if (error) return alert(error.message);
   cliente(cid);
 }
 
 async function addVisita(e, eid, cid) {
   e.preventDefault();
-  const f = e.target;
-  const fecha = val(f, 'fecha') || hoy();
-  const { error } = await sb.from('visitas').insert({ equipo_id: eid, fecha, trabajo_hecho: val(f, 'trabajo_hecho'), pendiente: val(f, 'pendiente'), notas: val(f, 'notas') });
+  const f = e.target, d = datos(f, VF);
+  const { error } = await sb.from('visitas').insert({ equipo_id: eid, ...d });
   if (error) return alert(error.message);
-  if (f.elements.mant.checked) await sb.from('equipos').update({ ultimo_mantenimiento: fecha }).eq('id', eid);
+  if (f.elements.mant.checked) await sb.from('equipos').update({ ultimo_mantenimiento: d.fecha }).eq('id', eid);
+  cliente(cid);
+}
+
+async function guardar(tabla, id, d, cid) {
+  const { error } = await sb.from(tabla).update(d).eq('id', id);
+  if (error) return alert(error.message);
+  cliente(cid);
+}
+function upCliente(e, id) { e.preventDefault(); guardar('clientes', id, datos(e.target, CF), id); }
+function upEquipo(e, id, cid) { e.preventDefault(); guardar('equipos', id, datos(e.target, EF), cid); }
+function upVisita(e, id, cid) { e.preventDefault(); guardar('visitas', id, datos(e.target, VF), cid); }
+
+async function limpiar(ids) {
+  if (!ids.length) return;
+  const { data } = await sb.from('fotos').select('path').in('equipo_id', ids);
+  if (data && data.length) await sb.storage.from('fotos').remove(data.map(x => x.path));
+}
+
+async function borrar(tabla, id, cid, msg) {
+  if (!confirm(msg)) return;
+  if (tabla === 'equipos') await limpiar([id]);
+  if (tabla === 'clientes') await limpiar(((await sb.from('equipos').select('id').eq('cliente_id', id)).data || []).map(x => x.id));
+  const { error } = await sb.from(tabla).delete().eq('id', id);
+  if (error) return alert(error.message);
+  cid ? cliente(cid) : clientes();
+}
+
+function reducir(file) {
+  return new Promise((ok, mal) => {
+    const img = new Image();
+    img.onload = () => {
+      const k = Math.min(1, 1280 / Math.max(img.width, img.height)), c = document.createElement('canvas');
+      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(img.src);
+      c.toBlob(b => b ? ok(b) : mal(new Error('No se pudo procesar la foto')), 'image/jpeg', 0.8);
+    };
+    img.onerror = () => mal(new Error('No se pudo leer la foto'));
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+async function subir(inp, eid, cid) {
+  const files = [...inp.files];
+  if (!files.length) return;
+  inp.parentElement.firstChild.textContent = 'Subiendo…';
+  for (const fl of files) {
+    try {
+      const blob = await reducir(fl), path = `${eid}/${Date.now()}-${Math.random().toString(36).slice(2, 7)}.jpg`;
+      const u = await sb.storage.from('fotos').upload(path, blob, { contentType: 'image/jpeg' });
+      if (u.error) throw u.error;
+      const r = await sb.from('fotos').insert({ equipo_id: eid, path });
+      if (r.error) throw r.error;
+    } catch (err) { alert(err.message); break; }
+  }
+  cliente(cid);
+}
+
+async function delFoto(id, path, cid) {
+  if (!confirm('¿Borrar esta foto?')) return;
+  await sb.storage.from('fotos').remove([path]);
+  const { error } = await sb.from('fotos').delete().eq('id', id);
+  if (error) return alert(error.message);
   cliente(cid);
 }
 
