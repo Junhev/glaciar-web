@@ -133,19 +133,26 @@ async function addCliente(e) {
   cliente(data.id);
 }
 
-const CF=['nombre','telefono','direccion','notas'],EF=['marca','modelo','tipo','frigorias','gas','fecha_instalacion','ultimo_mantenimiento'],VF=['fecha','trabajo_hecho','pendiente','notas','repuestos','costo_repuestos','monto','pagado'];
+const CF=['nombre','telefono','direccion','notas'],EF=['marca','modelo','tipo','frigorias','gas','fecha_instalacion','ultimo_mantenimiento'],VF=['fecha','trabajo_hecho','pendiente','notas','repuestos','costo_repuestos','monto','pagado','temp_ambiente','temp_salida'];
 const datos=(f,l)=>Object.fromEntries(l.map(n=>[n,val(f,n)]));
 const opt=(l,v)=>'<option value="">—</option>'+l.map(x=>`<option${x===v?' selected':''}>${x}</option>`).join('');
 const campos={
   cliente:c=>`<label>Nombre<input name="nombre" required value="${esc(c.nombre)}"></label><div class="row"><label>Teléfono<input name="telefono" type="tel" value="${esc(c.telefono)}"></label><label>Dirección<input name="direccion" value="${esc(c.direccion)}"></label></div><label>Notas<textarea name="notas">${esc(c.notas)}</textarea></label>`,
-  equipo:q=>`<div class="row"><label>Marca<input name="marca" value="${esc(q.marca)}"></label><label>Modelo<input name="modelo" value="${esc(q.modelo)}"></label></div><div class="row"><label>Tipo<select name="tipo">${opt(['Split','Inverter','Ventana','Portátil','Otro'],q.tipo)}</select></label><label>Frigorías<input name="frigorias" type="number" inputmode="numeric" min="0" value="${esc(q.frigorias)}"></label></div><div class="row"><label>Gas<select name="gas">${opt(['R410A','R32','R22','Otro'],q.gas)}</select></label><label>Instalación (desde acá cuenta la garantía)<input name="fecha_instalacion" type="date" value="${esc(q.fecha_instalacion)}"></label></div><label>Último mantenimiento<input name="ultimo_mantenimiento" type="date" value="${esc(q.ultimo_mantenimiento)}"></label>`,
-  visita:v=>`<label>Fecha<input name="fecha" type="date" required value="${esc(v.fecha)}"></label><label>Trabajo hecho<textarea name="trabajo_hecho" required>${esc(v.trabajo_hecho)}</textarea></label><label>Qué falta o recomiendo<input name="pendiente" value="${esc(v.pendiente)}"></label><label>Notas<input name="notas" value="${esc(v.notas)}"></label><label>Repuestos usados<input name="repuestos" value="${esc(v.repuestos)}"></label><div class="row"><label>Costo de repuestos ($)<input name="costo_repuestos" type="number" inputmode="decimal" min="0" step="any" value="${esc(v.costo_repuestos)}"></label><label>Monto a cobrar ($)<input name="monto" type="number" inputmode="decimal" min="0" step="any" value="${esc(v.monto)}"></label></div><label>Pagado ($)<input name="pagado" type="number" inputmode="decimal" min="0" step="any" value="${esc(v.pagado)}"></label>`
+  equipo:q=>`<div class="row"><label>Marca<input name="marca" value="${esc(q.marca)}"></label><label>Modelo<input name="modelo" value="${esc(q.modelo)}"></label></div><div class="row"><label>Tipo<select name="tipo">${opt(['Split','Inverter','Ventana','Portátil','Otro'],q.tipo)}</select></label><label>Frigorías<input name="frigorias" type="number" inputmode="numeric" min="0" value="${esc(q.frigorias)}"></label></div><div class="row"><label>Gas<select name="gas">${opt(['R410A','R32','R22','Otro'],q.gas)}</select></label><label>Instalación<input name="fecha_instalacion" type="date" value="${esc(q.fecha_instalacion)}"></label></div><label>Último mantenimiento (reinicia la garantía)<input name="ultimo_mantenimiento" type="date" value="${esc(q.ultimo_mantenimiento)}"></label>`,
+  visita:v=>`<label>Fecha<input name="fecha" type="date" required value="${esc(v.fecha)}"></label><label>Trabajo hecho<textarea name="trabajo_hecho" required>${esc(v.trabajo_hecho)}</textarea></label><label>Qué falta o recomiendo<input name="pendiente" value="${esc(v.pendiente)}"></label><div class="row"><label>Temp. ambiente, sensor unidad interior (°C)<input name="temp_ambiente" type="number" inputmode="decimal" step="any" value="${esc(v.temp_ambiente)}"></label><label>Temp. de salida unidad interior (°C)<input name="temp_salida" type="number" inputmode="decimal" step="any" value="${esc(v.temp_salida)}"></label></div><label>Notas<input name="notas" value="${esc(v.notas)}"></label><label>Repuestos usados<input name="repuestos" value="${esc(v.repuestos)}"></label><div class="row"><label>Costo de repuestos ($)<input name="costo_repuestos" type="number" inputmode="decimal" min="0" step="any" value="${esc(v.costo_repuestos)}"></label><label>Monto a cobrar ($)<input name="monto" type="number" inputmode="decimal" min="0" step="any" value="${esc(v.monto)}"></label></div><label>Pagado ($)<input name="pagado" type="number" inputmode="decimal" min="0" step="any" value="${esc(v.pagado)}"></label>`
 };
 
 const $m = n => '$' + Number(n || 0).toLocaleString('es-AR');
 const debe = v => (Number(v.monto) || 0) - (Number(v.pagado) || 0);
 function cobro(v) {
   const l = [];
+  if (v.temp_ambiente != null || v.temp_salida != null) {
+    const t = [];
+    if (v.temp_ambiente != null) t.push(`Ambiente ${v.temp_ambiente} °C`);
+    if (v.temp_salida != null) t.push(`Salida unidad interior ${v.temp_salida} °C`);
+    if (v.temp_ambiente != null && v.temp_salida != null) t.push(`diferencia ${Math.round((v.temp_ambiente - v.temp_salida) * 10) / 10} °C`);
+    l.push(t.join(' · '));
+  }
   if (v.repuestos || v.costo_repuestos) l.push(`Repuestos: ${esc(v.repuestos || '')}${v.costo_repuestos ? ' (costo ' + $m(v.costo_repuestos) + ')' : ''}`);
   if (v.monto != null || v.pagado != null) { const d = debe(v); l.push(`Cobro ${$m(v.monto)} · Pagado ${$m(v.pagado)} · ` + (d > 0 ? `<b class="debe">Debe ${$m(d)}</b>` : 'Saldado')); }
   return l.length ? '<br><small>' + l.join('<br>') + '</small>' : '';
@@ -189,7 +196,7 @@ async function cliente(id) {
     }
   }
   const equipos = c.equipos.map(q => {
-    const vs = vis.filter(v => v.equipo_id === q.id), fs = fotos.filter(x => x.equipo_id === q.id), g = garantia(q.fecha_instalacion);
+    const vs = vis.filter(v => v.equipo_id === q.id), fs = fotos.filter(x => x.equipo_id === q.id), g = garantia([q.fecha_instalacion, q.ultimo_mantenimiento].filter(Boolean).sort().pop());
     return `<div class="card"><h3>${esc([q.marca, q.modelo].filter(Boolean).join(' ') || 'Equipo sin nombre')}</h3>
     <p class="meta">${esc([q.tipo, q.frigorias ? q.frigorias + ' frigorías' : null, q.gas].filter(Boolean).join(' · '))}</p>
     <p class="meta">Instalado: ${fmt(q.fecha_instalacion)} · Último mantenimiento: ${fmt(q.ultimo_mantenimiento)}</p>
