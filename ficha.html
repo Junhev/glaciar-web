@@ -54,6 +54,11 @@ details.mini summary{font-weight:400;font-size:.85rem}
 a.btn{text-decoration:none;margin-right:8px}
 .item span.debe{color:var(--err);font-weight:800;margin-left:8px}
 b.debe{color:var(--err)}
+.card.nuevo{border-left:6px solid #e08a00;background:rgba(224,138,0,.12)}
+.card.nuevo.urg{border-left-color:#c62828;background:rgba(198,40,40,.14)}
+.tag{display:inline-block;font-style:normal;font-size:.75rem;font-weight:800;padding:1px 9px;border-radius:99px;background:#b36b00;color:#fff;margin-right:8px}
+.tag.urg{background:#c62828}
+.item.pend{border-left:6px solid #e08a00}
 </style>
 </head>
 <body>
@@ -101,11 +106,13 @@ async function clientes() {
   if (error) { app.innerHTML = barra('Clientes') + `<main><p class="err">${esc(error.message)}</p></main>`; return; }
   const dv = (await sb.from('visitas').select('monto,pagado,equipos(cliente_id)')).data || [], deuda = {};
   dv.forEach(v => { const k = v.equipos && v.equipos.cliente_id; if (k) deuda[k] = (deuda[k] || 0) + debe(v); });
-  const pe = (await sb.from('pedidos').select('id,created_at,tipo,mensaje,clientes(id,nombre)').eq('estado', 'nuevo').order('created_at', { ascending: false })).data || [];
+  const pe = (await sb.from('pedidos').select('id,created_at,tipo,mensaje,urgente,clientes(id,nombre)').eq('estado', 'nuevo').order('urgente', { ascending: false }).order('created_at', { ascending: false })).data || [];
+  const conPedido = {};
+  pe.forEach(p => { if (p.clientes) conPedido[p.clientes.id] = (conPedido[p.clientes.id] === 'urg' || p.urgente) ? 'urg' : 'nuevo'; });
   const total = Object.values(deuda).reduce((a, b) => a + Math.max(0, b), 0);
   app.innerHTML = barra('Clientes') + `<main>
   ${total > 0 ? `<p class="gar off">Te deben en total: ${$m(total)}</p>` : ''}
-  ${pe.length ? `<h4>Pedidos nuevos (${pe.length})</h4>` + pe.map(p => `<div class="card"><b>${esc(p.clientes ? p.clientes.nombre : 'Cliente')}</b> · ${esc(p.tipo)}<br><small>${new Date(p.created_at).toLocaleString('es-AR')}</small>${p.mensaje ? `<p>${esc(p.mensaje)}</p>` : ''}${p.clientes ? `<button type="button" class="ghost" onclick="cliente(${p.clientes.id})">Ver cliente</button>` : ''}<button type="button" onclick="resolver(${p.id})">Marcar como resuelto</button></div>`).join('') : ''}
+  ${pe.length ? `<h4>Pedidos nuevos (${pe.length})</h4>` + pe.map(p => `<div class="card nuevo${p.urgente ? ' urg' : ''}"><em class="tag${p.urgente ? ' urg' : ''}">${p.urgente ? 'Urgente' : 'Nuevo'}</em><b>${esc(p.clientes ? p.clientes.nombre : 'Cliente')}</b> · ${esc(p.tipo)}<br><small>${new Date(p.created_at).toLocaleString('es-AR')}</small>${p.mensaje ? `<p>${esc(p.mensaje)}</p>` : ''}${p.clientes ? `<button type="button" class="ghost" onclick="cliente(${p.clientes.id})">Ver cliente</button>` : ''}<button type="button" onclick="resolver(${p.id})">Marcar como resuelto</button></div>`).join('') : ''}
   <input id="q" type="search" placeholder="Buscar por nombre, teléfono o dirección">
   <div id="list"></div>
   <details open><summary>Nuevo cliente</summary>
@@ -120,7 +127,7 @@ async function clientes() {
   const pintar = () => {
     const q = document.getElementById('q').value.toLowerCase();
     const r = data.filter(c => [c.nombre, c.telefono, c.direccion].join(' ').toLowerCase().includes(q));
-    list.innerHTML = r.length ? r.map(c => `<button class="item" onclick="cliente(${c.id})"><b>${esc(c.nombre)}</b><span>${esc([c.telefono, c.direccion].filter(Boolean).join(' · '))}</span>${deuda[c.id] > 0 ? `<span class="debe">Debe ${$m(deuda[c.id])}</span>` : ''}</button>`).join('')
+    list.innerHTML = r.length ? r.map(c => `<button class="item${conPedido[c.id] ? ' pend' : ''}" onclick="cliente(${c.id})"><b>${esc(c.nombre)}${conPedido[c.id] ? ` <em class="tag${conPedido[c.id] === 'urg' ? ' urg' : ''}">${conPedido[c.id] === 'urg' ? 'Urgente' : 'Pedido nuevo'}</em>` : ''}</b><span>${esc([c.telefono, c.direccion].filter(Boolean).join(' · '))}</span>${deuda[c.id] > 0 ? `<span class="debe">Debe ${$m(deuda[c.id])}</span>` : ''}</button>`).join('')
       : '<p class="meta">Todavía no hay clientes. Cargá el primero abajo.</p>';
   };
   document.getElementById('q').oninput = pintar;
