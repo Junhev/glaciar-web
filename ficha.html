@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Ficha técnica · GlaciAR</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0e2a3a;--mut:#5b7685;--bg:#f2f8fb;--card:#fff;--line:#cfe0e8;--blue:#0b6e99;--blue2:#0a5a7e;--err:#b3261e;--tag:#e1f0f6}
+@media (prefers-color-scheme:dark){:root{--ink:#e6f2f7;--mut:#8fb0c0;--bg:#0b1a23;--card:#12262f;--line:#244454;--blue:#4fb3dc;--blue2:#7cc8e8;--err:#ff8a80;--tag:#17323f}}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Manrope,system-ui,sans-serif}
+header{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:2}
+header h2{flex:1;margin:0;font-size:1.05rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand{font-weight:800;color:var(--blue)}
+main{max-width:640px;margin:0 auto;padding:16px}
+.box{max-width:380px;margin:12vh auto 0;padding:24px}
+.box h1{margin:0;font-size:2rem;font-weight:800;color:var(--blue)}
+.box p{color:var(--mut);margin:4px 0 20px}
+label{display:block;font-size:.85rem;font-weight:600;margin:10px 0 4px}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+textarea{min-height:70px;resize:vertical}
+input:focus,select:focus,textarea:focus,button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+button{font:inherit;font-weight:600;border:0;border-radius:8px;padding:10px 16px;background:var(--blue);color:#fff;cursor:pointer;margin-top:14px}
+@media (prefers-color-scheme:dark){button{color:#06222e}}
+button:hover{background:var(--blue2)}
+button.ghost{background:none;color:var(--blue);margin:0;padding:6px 8px}
+.err{color:var(--err);min-height:1.2em;margin:8px 0 0!important}
+.item{display:block;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:8px 0 0}
+.item:hover{background:var(--tag)}
+.item b{display:block}.item span{color:var(--mut);font-size:.9rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin:12px 0}
+.card h3{margin:0 0 4px;font-size:1.05rem}
+.meta{color:var(--mut);font-size:.9rem;margin:2px 0}
+.vis{border-left:3px solid var(--blue);padding:2px 0 2px 10px;margin:10px 0}
+.vis small{color:var(--mut)}
+details{margin:14px 0 0;border-top:1px solid var(--line);padding-top:10px}
+summary{cursor:pointer;font-weight:600;color:var(--blue)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chk{display:flex;gap:8px;align-items:center;font-weight:400}.chk input{width:auto}
+h4{margin:20px 0 0;font-size:1rem}
+a{color:var(--blue)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+const sb = supabase.createClient(
+  'https://kscqvfnolitxbhfccagf.supabase.co',
+  'sb_publishable_jTWYlXZEocDG88PM_fnSSg_62XFAha9'
+);
+const app = document.getElementById('app');
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const val = (f, n) => { const v = f.elements[n].value.trim(); return v === '' ? null : v; };
+const fmt = d => d ? d.split('-').reverse().join('/') : '—';
+const hoy = () => new Date().toLocaleDateString('en-CA');
+
+function top(titulo, volver) {
+  return `<header>${volver ? `<button class="ghost" onclick="${volver}">Volver</button>` : '<span class="brand">GlaciAR</span>'}<h2>${esc(titulo)}</h2><button class="ghost" onclick="salir()">Salir</button></header>`;
+}
+
+async function init() {
+  const { data } = await sb.auth.getSession();
+  data.session ? clientes() : login();
+}
+
+function login() {
+  app.innerHTML = `<main class="box"><h1>GlaciAR</h1><p>Ficha técnica de clientes</p>
+  <form id="f"><label>Email<input name="email" type="email" required autocomplete="username"></label>
+  <label>Contraseña<input name="pw" type="password" required autocomplete="current-password"></label>
+  <p class="err" id="err"></p><button>Entrar</button></form></main>`;
+  document.getElementById('f').onsubmit = async e => {
+    e.preventDefault();
+    const f = e.target;
+    const { error } = await sb.auth.signInWithPassword({ email: f.email.value.trim(), password: f.pw.value });
+    if (error) { document.getElementById('err').textContent = 'Email o contraseña incorrectos.'; return; }
+    clientes();
+  };
+}
+
+async function salir() { await sb.auth.signOut(); login(); }
+
+async function clientes() {
+  const { data, error } = await sb.from('clientes').select('id,nombre,telefono,direccion').order('nombre');
+  if (error) { app.innerHTML = top('Clientes') + `<main><p class="err">${esc(error.message)}</p></main>`; return; }
+  app.innerHTML = top('Clientes') + `<main>
+  <input id="q" type="search" placeholder="Buscar por nombre, teléfono o dirección">
+  <div id="list"></div>
+  <details open><summary>Nuevo cliente</summary>
+  <form onsubmit="addCliente(event)">
+    <label>Nombre<input name="nombre" required></label>
+    <div class="row"><label>Teléfono<input name="telefono" type="tel"></label>
+    <label>Dirección<input name="direccion"></label></div>
+    <label>Notas<textarea name="notas"></textarea></label>
+    <button>Guardar cliente</button></form></details></main>`;
+  const list = document.getElementById('list');
+  const pintar = () => {
+    const q = document.getElementById('q').value.toLowerCase();
+    const r = data.filter(c => [c.nombre, c.telefono, c.direccion].join(' ').toLowerCase().includes(q));
+    list.innerHTML = r.length ? r.map(c => `<button class="item" onclick="cliente(${c.id})"><b>${esc(c.nombre)}</b><span>${esc([c.telefono, c.direccion].filter(Boolean).join(' · '))}</span></button>`).join('')
+      : '<p class="meta">Todavía no hay clientes. Cargá el primero abajo.</p>';
+  };
+  document.getElementById('q').oninput = pintar;
+  pintar();
+}
+
+async function addCliente(e) {
+  e.preventDefault();
+  const f = e.target;
+  const { data, error } = await sb.from('clientes').insert({ nombre: val(f, 'nombre'), telefono: val(f, 'telefono'), direccion: val(f, 'direccion'), notas: val(f, 'notas') }).select('id').single();
+  if (error) return alert(error.message);
+  cliente(data.id);
+}
+
+async function cliente(id) {
+  const { data: c, error } = await sb.from('clientes').select('*, equipos(*)').eq('id', id).single();
+  if (error) return alert(error.message);
+  const ids = c.equipos.map(q => q.id);
+  let vis = [];
+  if (ids.length) {
+    const r = await sb.from('visitas').select('*').in('equipo_id', ids).order('fecha', { ascending: false });
+    vis = r.data || [];
+  }
+  const equipos = c.equipos.map(q => {
+    const vs = vis.filter(v => v.equipo_id === q.id);
+    return `<div class="card"><h3>${esc([q.marca, q.modelo].filter(Boolean).join(' ') || 'Equipo sin nombre')}</h3>
+    <p class="meta">${esc([q.tipo, q.frigorias ? q.frigorias + ' frigorías' : null, q.gas].filter(Boolean).join(' · '))}</p>
+    <p class="meta">Instalado: ${fmt(q.fecha_instalacion)} · Último mantenimiento: ${fmt(q.ultimo_mantenimiento)}</p>
+    ${vs.map(v => `<div class="vis"><small>${fmt(v.fecha)}</small><br>${esc(v.trabajo_hecho || 'Sin detalle')}${v.pendiente ? `<br><small>Falta: ${esc(v.pendiente)}</small>` : ''}${v.notas ? `<br><small>${esc(v.notas)}</small>` : ''}</div>`).join('') || '<p class="meta">Sin visitas cargadas.</p>'}
+    <details><summary>Cargar visita</summary>
+    <form onsubmit="addVisita(event,${q.id},${c.id})">
+      <label>Fecha<input name="fecha" type="date" value="${hoy()}" required></label>
+      <label>Trabajo hecho<textarea name="trabajo_hecho" required></textarea></label>
+      <label>Qué falta o recomiendo<input name="pendiente"></label>
+      <label>Notas<input name="notas"></label>
+      <label class="chk"><input type="checkbox" name="mant"> Fue mantenimiento (actualiza la fecha del equipo)</label>
+      <button>Guardar visita</button></form></details></div>`;
+  }).join('');
+  app.innerHTML = top(c.nombre, 'clientes()') + `<main>
+  <p class="meta">${c.telefono ? `<a href="tel:${esc(c.telefono)}">${esc(c.telefono)}</a>` : 'Sin teléfono'}${c.direccion ? ' · ' + esc(c.direccion) : ''}</p>
+  ${c.notas ? `<p>${esc(c.notas)}</p>` : ''}
+  <h4>Equipos</h4>${equipos || '<p class="meta">Este cliente no tiene equipos cargados.</p>'}
+  <details ${c.equipos.length ? '' : 'open'}><summary>Agregar equipo</summary>
+  <form onsubmit="addEquipo(event,${c.id})">
+    <div class="row"><label>Marca<input name="marca"></label><label>Modelo<input name="modelo"></label></div>
+    <div class="row"><label>Tipo<select name="tipo"><option value="">—</option><option>Split</option><option>Inverter</option><option>Ventana</option><option>Portátil</option><option>Otro</option></select></label>
+    <label>Frigorías<input name="frigorias" type="number" inputmode="numeric" min="0"></label></div>
+    <div class="row"><label>Gas<select name="gas"><option value="">—</option><option>R410A</option><option>R32</option><option>R22</option><option>Otro</option></select></label>
+    <label>Instalación<input name="fecha_instalacion" type="date"></label></div>
+    <label>Último mantenimiento<input name="ultimo_mantenimiento" type="date"></label>
+    <button>Guardar equipo</button></form></details></main>`;
+}
+
+async function addEquipo(e, cid) {
+  e.preventDefault();
+  const f = e.target;
+  const { error } = await sb.from('equipos').insert({
+    cliente_id: cid, marca: val(f, 'marca'), modelo: val(f, 'modelo'), tipo: val(f, 'tipo'),
+    frigorias: val(f, 'frigorias'), gas: val(f, 'gas'),
+    fecha_instalacion: val(f, 'fecha_instalacion'), ultimo_mantenimiento: val(f, 'ultimo_mantenimiento')
+  });
+  if (error) return alert(error.message);
+  cliente(cid);
+}
+
+async function addVisita(e, eid, cid) {
+  e.preventDefault();
+  const f = e.target;
+  const fecha = val(f, 'fecha') || hoy();
+  const { error } = await sb.from('visitas').insert({ equipo_id: eid, fecha, trabajo_hecho: val(f, 'trabajo_hecho'), pendiente: val(f, 'pendiente'), notas: val(f, 'notas') });
+  if (error) return alert(error.message);
+  if (f.elements.mant.checked) await sb.from('equipos').update({ ultimo_mantenimiento: fecha }).eq('id', eid);
+  cliente(cid);
+}
+
+init();
+</script>
+</body>
+</html>
