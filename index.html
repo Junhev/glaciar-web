@@ -8,6 +8,7 @@
 <meta name="theme-color" content="#f4f7fa" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'%3E%3Ccircle cx='17' cy='17' r='15.5' fill='none' stroke='%230a1628' stroke-width='1.5'/%3E%3Cpath d='M17 7v20M9 12l16 10M9 22l16-10' stroke='%235fb8d9' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E" />
 <meta property="og:type" content="website" />
+<meta property="og:image" content="https://images.unsplash.com/photo-1718203862467-c33159fdc504?auto=format&fit=crop&w=1200&q=70" />
 <meta property="og:locale" content="es_AR" />
 <meta property="og:title" content="GlaciAR — Climatización para Hogares y Comercios" />
 <meta property="og:description" content="Instalación, mantenimiento y reparación de aires acondicionados en Lomas de Zamora y zona sur del GBA. Presupuesto previo y garantía por escrito." />
@@ -339,6 +340,38 @@
   .footer-contact { display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; font-family: var(--mono); font-size: 12px; color: #8fa3ba; }
   .footer-contact a { color: #8fa3ba; text-decoration: none; }
   .footer-contact a:hover { color: var(--ice); }
+
+  /* ===== FOTOS, CALCULADORA, ZONAS Y PREGUNTAS ===== */
+  .svc-row { flex-wrap: wrap; }
+  .svc-img { flex: 0 0 100%; width: 100%; height: 180px; object-fit: cover; border-radius: 6px; border: 1px solid var(--line); background: var(--line); order: -1; }
+  @media (min-width: 640px) { .svc-row { flex-wrap: nowrap; } .svc-img { order: 2; flex: 0 0 190px; width: 190px; height: 128px; margin-left: auto; } }
+  .calc-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+  @media (min-width: 640px) { .calc-grid { grid-template-columns: 1fr 1fr; } }
+  .calc-grid .full { grid-column: 1 / -1; }
+  .calc-form .chk { display: flex; gap: 0.6rem; align-items: flex-start; font-family: var(--serif); font-size: 15px; color: var(--slate); }
+  .calc-form .chk input { width: 20px; height: 20px; min-height: 0; margin-top: 2px; }
+  .calc-form button { margin-top: 1.2rem; }
+  .calc-err { min-height: 1.3em; margin-top: 0.8rem; color: #b3261e; font-family: var(--display); font-size: 13px; }
+  .calc-out { margin-top: 1.4rem; padding: 1.4rem; background: var(--navy); color: var(--paper); border-radius: 6px; }
+  .calc-out .big { font-family: var(--mono); font-size: 30px; font-weight: 500; color: var(--ice); }
+  .calc-out p { font-family: var(--serif); font-size: 15px; color: #c9d6e3; margin-top: 0.5rem; }
+  .calc-out .nota { font-size: 13px; color: #8fa3ba; }
+  .calc-out .btn-light { margin-top: 1rem; }
+  .zone-list { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; }
+  .zone-list li { font-family: var(--display); font-size: 14px; color: var(--navy); border: 1px solid var(--line); background: var(--paper-warm); border-radius: 20px; padding: 0.35rem 0.9rem; }
+  .zone-note { font-family: var(--serif); font-size: 15px; color: var(--slate); margin-top: 1rem; }
+  .faq { background: var(--paper-warm); border-top: 1px solid var(--line); }
+  .faq details { border-top: 1px solid var(--line); padding: 1rem 0; }
+  .faq details:last-of-type { border-bottom: 1px solid var(--line); }
+  .faq summary { cursor: pointer; font-family: var(--display); font-weight: 600; font-size: 16px; color: var(--navy); list-style: none; display: flex; justify-content: space-between; gap: 1rem; min-height: 32px; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; font-family: var(--mono); color: var(--ice-text); }
+  .faq details[open] summary::after { content: "–"; }
+  .faq details p { font-family: var(--serif); font-size: 15px; color: var(--slate); margin-top: 0.6rem; max-width: 560px; }
+  .svc-fig { position: relative; overflow: hidden; flex: 0 0 100%; height: 180px; order: -1; border-radius: 6px; border: 1px solid var(--line); background: #0f2038; }
+  .svc-fig svg, .svc-fig img { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .svc-fig img { object-fit: cover; }
+  @media (min-width: 640px) { .svc-fig { order: 2; flex: 0 0 190px; width: 190px; height: 128px; margin-left: auto; } }
 </style>
 </head>
 <body>
@@ -353,7 +386,7 @@
     </div>
     <span class="brand-text">Glaci<em>AR</em></span>
   </a>
-  <div class="nav-links"><a href="#servicios">Servicios</a><a href="#metodologia">Metodología</a><a href="#contacto">Contacto</a></div>
+  <div class="nav-links"><a href="#servicios">Servicios</a><a href="#calculadora">Calculá tu equipo</a><a href="#metodologia">Metodología</a><a href="#contacto">Contacto</a></div>
   <a href="#contacto" class="nav-cta">Solicitar presupuesto</a>
 </nav>
 
@@ -422,6 +455,7 @@
     <div class="hero-actions">
       <a href="#contacto" class="btn-primary">Solicitar presupuesto</a>
       <a href="#servicios" class="btn-ghost">Ver servicios</a>
+      <a href="#calculadora" class="btn-ghost">Calcular frigorías</a>
     </div>
   </div>
   <div class="hero-inner gauge-strip">
@@ -449,6 +483,11 @@
     </div>
     <div class="svc-list">
       <div class="svc-row">
+        <div class="svc-fig" role="img" aria-label="Instalación de un equipo split"><svg viewBox="0 0 380 256" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="380" height="256" fill="#0f2038"/><circle cx="60" cy="40" r="90" fill="none" stroke="#173050" stroke-width="1.5"/><circle cx="340" cy="230" r="110" fill="none" stroke="#173050" stroke-width="1.5"/>
+<rect x="60" y="68" width="170" height="52" rx="10" fill="#142a47" stroke="#5fb8d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M74 106h142" stroke="#5fb8d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M86 90h64M86 97h64" stroke="#2a4a6b" stroke-width="2" stroke-linecap="round"/><circle cx="206" cy="88" r="3" fill="#8fd3ea"/>
+<path d="M92 132c10 14 20 14 30 0M132 132c10 14 20 14 30 0M172 132c10 14 20 14 30 0" fill="none" stroke="#5fb8d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".6"/>
+<path d="M230 94h50a10 10 0 0 1 10 10v54" fill="none" stroke="#8fd3ea" stroke-width="3" stroke-linecap="round"/>
+<rect x="250" y="158" width="86" height="52" rx="6" fill="#142a47" stroke="#5fb8d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="293" cy="184" r="16" fill="none" stroke="#5fb8d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M293 170v28M279 184h28" stroke="#5fb8d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><img src="img/instalacion.jpg" alt="" loading="lazy" onerror="if(!this.dataset.u){this.dataset.u=1;this.src='https://images.unsplash.com/photo-1691351582808-329cde17ffa2?auto=format&amp;fit=crop&amp;w=700&amp;q=70'}else{this.remove()}" /></div>
         <div class="svc-index">01</div>
         <div class="svc-content">
           <h3>Instalación residencial y comercial</h3>
@@ -457,6 +496,11 @@
         </div>
       </div>
       <div class="svc-row">
+        <div class="svc-fig" role="img" aria-label="Limpieza y mantenimiento de aire acondicionado"><svg viewBox="0 0 380 256" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="380" height="256" fill="#0f2038"/><circle cx="60" cy="40" r="90" fill="none" stroke="#173050" stroke-width="1.5"/><circle cx="340" cy="230" r="110" fill="none" stroke="#173050" stroke-width="1.5"/>
+<rect x="100" y="66" width="170" height="112" rx="8" fill="#142a47" stroke="#5fb8d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M100 94h170M100 122h170M100 150h170M142 66v112M185 66v112M228 66v112" stroke="#2a4a6b" stroke-width="2"/>
+<circle cx="270" cy="66" r="22" fill="#0f2038" stroke="#8fd3ea" stroke-width="2.5"/><path d="M259 66l8 8 14-16" fill="none" stroke="#8fd3ea" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M120 196c6 8 12 8 18 0M170 196c6 8 12 8 18 0M220 196c6 8 12 8 18 0" fill="none" stroke="#5fb8d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".6"/></svg><img src="img/mantenimiento.jpg" alt="" loading="lazy" onerror="if(!this.dataset.u){this.dataset.u=1;this.src='https://images.unsplash.com/photo-1667983453881-4992fe86ab1b?auto=format&amp;fit=crop&amp;w=700&amp;q=70'}else{this.remove()}" /></div>
         <div class="svc-index">02</div>
         <div class="svc-content">
           <h3>Mantenimiento preventivo</h3>
@@ -465,6 +509,11 @@
         </div>
       </div>
       <div class="svc-row">
+        <div class="svc-fig" role="img" aria-label="Diagnóstico y reparación de un equipo"><svg viewBox="0 0 380 256" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="380" height="256" fill="#0f2038"/><circle cx="60" cy="40" r="90" fill="none" stroke="#173050" stroke-width="1.5"/><circle cx="340" cy="230" r="110" fill="none" stroke="#173050" stroke-width="1.5"/>
+<circle cx="190" cy="120" r="64" fill="#142a47" stroke="#5fb8d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="190" cy="120" r="52" fill="none" stroke="#2a4a6b" stroke-width="6" stroke-dasharray="3 8.2"/>
+<path d="M190 120l32-28" stroke="#8fd3ea" stroke-width="3.5" stroke-linecap="round"/><circle cx="190" cy="120" r="6" fill="#8fd3ea"/>
+<path d="M190 184v26" stroke="#5fb8d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><rect x="176" y="208" width="28" height="12" rx="3" fill="#142a47" stroke="#5fb8d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg><img src="img/reparacion.jpg" alt="" loading="lazy" onerror="if(!this.dataset.u){this.dataset.u=1;this.src='https://images.unsplash.com/photo-1698479603408-1a66a6d9e80f?auto=format&amp;fit=crop&amp;w=700&amp;q=70'}else{this.remove()}" /></div>
         <div class="svc-index">03</div>
         <div class="svc-content">
           <h3>Diagnóstico y reparación</h3>
@@ -473,6 +522,11 @@
         </div>
       </div>
       <div class="svc-row">
+        <div class="svc-fig" role="img" aria-label="Carga de gas refrigerante"><svg viewBox="0 0 380 256" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="380" height="256" fill="#0f2038"/><circle cx="60" cy="40" r="90" fill="none" stroke="#173050" stroke-width="1.5"/><circle cx="340" cy="230" r="110" fill="none" stroke="#173050" stroke-width="1.5"/>
+<rect x="96" y="76" width="58" height="124" rx="16" fill="#142a47" stroke="#5fb8d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><rect x="115" y="58" width="20" height="18" rx="3" fill="#142a47" stroke="#5fb8d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M96 112h58" stroke="#5fb8d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="125" y="146" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#8fd3ea">R-410A</text>
+<path d="M135 60c44-26 86-6 106 30" fill="none" stroke="#8fd3ea" stroke-width="3" stroke-linecap="round"/>
+<circle cx="262" cy="118" r="28" fill="#142a47" stroke="#5fb8d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M262 118l14-12" stroke="#8fd3ea" stroke-width="3" stroke-linecap="round"/><circle cx="262" cy="118" r="4" fill="#8fd3ea"/></svg><img src="img/gas.jpg" alt="" loading="lazy" onerror="if(!this.dataset.u){this.dataset.u=1;this.src='https://images.unsplash.com/photo-1726614846573-c1ac2e6161d1?auto=format&amp;fit=crop&amp;w=700&amp;q=70'}else{this.remove()}" /></div>
         <div class="svc-index">04</div>
         <div class="svc-content">
           <h3>Carga de gas refrigerante</h3>
@@ -481,6 +535,28 @@
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="calc" id="calculadora">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Herramienta</div>
+      <h2 class="sec-title">Calculá las frigorías que necesitás</h2>
+      <p class="sec-sub">Una estimación rápida para saber qué equipo corresponde. La confirmamos en la visita técnica.</p>
+    </div>
+    <form class="cform calc-form" onsubmit="return false">
+      <div class="calc-grid">
+        <div><label class="field-label" for="c-m2">Superficie del ambiente (m²)</label><input id="c-m2" type="number" inputmode="decimal" min="4" max="150" placeholder="Ej: 20" /></div>
+        <div><label class="field-label" for="c-alt">Altura del techo</label><select id="c-alt"><option value="2.4">Hasta 2,5 m</option><option value="2.8" selected>De 2,6 a 3 m</option><option value="3.3">Más de 3 m</option></select></div>
+        <div><label class="field-label" for="c-sol">Sol y calor del ambiente</label><select id="c-sol"><option value="0.9">Poco sol (interior o con sombra)</option><option value="1" selected>Normal</option><option value="1.2">Mucho sol (último piso, vidriado)</option></select></div>
+        <div><label class="field-label" for="c-pers">Personas habituales</label><input id="c-pers" type="number" inputmode="numeric" min="1" max="30" value="2" /></div>
+        <div class="full"><label class="chk"><input id="c-equipos" type="checkbox" /> Hay equipos que generan calor (computadoras, cocina, heladera comercial)</label></div>
+      </div>
+      <p class="calc-err" id="c-err" role="alert"></p>
+      <button class="btn-primary" id="c-go" type="button">Calcular</button>
+    </form>
+    <div class="calc-out" id="c-out" hidden aria-live="polite"></div>
   </div>
 </section>
 
@@ -623,6 +699,32 @@
   </div>
 </section>
 
+<section class="faq" id="preguntas">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Preguntas frecuentes</div>
+      <h2 class="sec-title">Lo que más nos consultan</h2>
+    </div>
+    <details><summary>¿Qué equipo necesito?</summary><p>Depende de la superficie, la altura del techo, el sol y la cantidad de personas. Usá la calculadora de frigorías para tener una estimación, y la confirmamos en la visita técnica.</p></details>
+    <details><summary>¿Cada cuánto conviene hacer el mantenimiento?</summary><p>Como mínimo una vez por año, antes del verano. En locales o ambientes de uso intensivo conviene cada seis meses. Con los filtros y serpentines sucios el equipo rinde peor y consume más energía.</p></details>
+    <details><summary>¿Qué incluye la visita técnica?</summary><p>Evaluamos el equipo o el lugar de instalación en el sitio y te damos un presupuesto por escrito. La visita cuesta $15.000 y se descuenta si realizás el trabajo con nosotros.</p></details>
+    <details><summary>¿Cuánto dura la garantía?</summary><p>Todos los trabajos incluyen garantía escrita de 15 días, con el detalle de lo realizado y los materiales utilizados.</p></details>
+    <details><summary>¿Atienden urgencias?</summary><p>Sí. Las urgencias tienen un recargo que te informamos antes de ir, para que decidas con el precio claro.</p></details>
+    <details><summary>¿Trabajan con todas las marcas?</summary><p>Sí, trabajamos con equipos split e inverter de las marcas del mercado.</p></details>
+  </div>
+</section>
+
+<section class="zona" id="zona">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Cobertura</div>
+      <h2 class="sec-title">Dónde trabajamos</h2>
+    </div>
+    <ul class="zone-list"><li>Lomas de Zamora</li><li>Banfield</li><li>Temperley</li><li>Turdera</li><li>Llavallol</li><li>Adrogué</li><li>Burzaco</li><li>Lanús</li><li>José Mármol</li><li>Rafael Calzada</li><li>Claypole</li><li>Don Orione</li><li>Ministro Rivadavia</li><li>Florencio Varela</li><li>Solano</li></ul>
+    <p class="zone-note">Si tu barrio no está en la lista, escribinos igual y te confirmamos.</p>
+  </div>
+</section>
+
 <div class="cta-band">
   <div class="cta-inner">
     <div>
@@ -738,5 +840,32 @@
   </div>
 </footer>
 
+<script>
+(function () {
+  var sizes = [2250, 3000, 4500, 5500, 6000, 7500, 9000, 12000];
+  var $ = function (id) { return document.getElementById(id); };
+  $('c-go').addEventListener('click', function () {
+    var m2 = parseFloat($('c-m2').value), err = $('c-err'), out = $('c-out');
+    if (!m2 || m2 < 4 || m2 > 150) { err.textContent = 'Ingresá una superficie entre 4 y 150 m².'; out.hidden = true; return; }
+    err.textContent = '';
+    var alt = parseFloat($('c-alt').value), sol = parseFloat($('c-sol').value);
+    var pers = Math.max(1, parseInt($('c-pers').value, 10) || 1);
+    var fg = m2 * alt * 40 * sol + Math.max(0, pers - 2) * 100 + ($('c-equipos').checked ? 400 : 0);
+    fg = Math.round(fg / 50) * 50;
+    var eq = sizes.filter(function (s) { return s >= fg; })[0];
+    var msg = 'Hola GlaciAR, calculé unas ' + fg + ' frigorías para un ambiente de ' + m2 + ' m² y quiero presupuesto de instalación.';
+    var html = '<div class="big">' + fg.toLocaleString('es-AR') + ' frigorías</div>';
+    if (eq) {
+      html += '<p>Equipo recomendado: <strong>' + eq.toLocaleString('es-AR') + ' frigorías</strong> (unos ' + (Math.round(eq * 3.968 / 1000) * 1000).toLocaleString('es-AR') + ' BTU).</p>';
+    } else {
+      html += '<p>Es una carga alta: probablemente necesite más de un equipo o un sistema piso-techo. Consultanos para evaluarlo.</p>';
+    }
+    html += '<p class="nota">Es una estimación orientativa. Ambientes con ventanales grandes o poca aislación pueden necesitar más. La confirmamos en la visita técnica.</p>';
+    html += '<a class="btn-light" href="https://wa.me/5491135630466?text=' + encodeURIComponent(msg) + '" target="_blank" rel="noopener">Pedir presupuesto por WhatsApp</a>';
+    out.innerHTML = html;
+    out.hidden = false;
+  });
+})();
+</script>
 </body>
 </html>
