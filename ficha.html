@@ -420,7 +420,7 @@ async function misTrabajos() {
     q('realizado').order('completado_at', { ascending: false }).limit(10)]);
   app.innerHTML = barra('Mis trabajos') + `<main><h4>Pendientes (${(p.data || []).length})</h4>
   ${(p.data || []).map(t => jobCard(t, false)).join('') || '<p class="meta">No tenés trabajos pendientes.</p>'}
-  ${(r.data || []).length ? '<h4>Últimos realizados</h4>' + r.data.map(t => jobCard(t, false)).join('') : ''}</main>`;
+  ${(r.data || []).length ? '<h4>Últimos realizados</h4>' + r.data.map(t => jobCard(t, false)).join('') : ''}${claveHtml()}</main>`;
 }
 
 async function trabajos(f) {
@@ -507,14 +507,68 @@ async function equipo() {
   const { data, error } = await sb.from('perfiles').select('*').order('created_at');
   if (error) { app.innerHTML = barra('Equipo', null, 'e') + `<main><p class="err">${esc(error.message)}</p></main>`; return; }
   PERF = Object.fromEntries(data.map(p => [p.id, p]));
-  app.innerHTML = barra('Equipo', null, 'e') + `<main>${data.map(p => { const yo = p.id === ME.id; return `<div class="card"><form onsubmit="upPerfil(event,'${p.id}')">
+  const ul = ULTIMO; ULTIMO = null;
+  app.innerHTML = barra('Equipo', null, 'e') + `<main>
+  ${ul ? `<div class="tile okk"><span>Empleado creado</span><b>${esc(ul.nombre)}</b><p class="mut">Usuario: ${esc(ul.email)}<br>Contraseña temporal: ${esc(ul.password)}</p><button type="button" onclick="copiarAcceso()">Copiar datos de acceso</button></div>` : ''}
+  <details ${data.length < 2 ? 'open' : ''}><summary>Agregar empleado</summary>
+  <form onsubmit="nuevoEmpleado(event)">
+    <label>Nombre<input name="nombre" required autocomplete="off"></label>
+    <label>Email (con el que va a entrar)<input name="email" type="email" required autocomplete="off"></label>
+    <label>Contraseña temporal (mínimo 8 caracteres)<input name="password" id="np" required minlength="8" autocomplete="off"></label>
+    <button type="button" class="ghost" onclick="document.getElementById('np').value = genClave()">Generar una</button>
+    <label>Rol<select name="rol"><option value="tecnico">Técnico</option><option value="admin">Administrador</option></select></label>
+    <p class="err" id="ne"></p><button>Crear empleado</button></form></details>
+  ${data.map(p => { const yo = p.id === ME.id; return `<div class="card"><form onsubmit="upPerfil(event,'${p.id}')">
     <b>${esc(p.email)}</b>${p.activo ? '' : ' <em class="tag urg">Sin acceso</em>'}
     <label>Nombre<input name="nombre" required value="${esc(p.nombre)}"></label>
     <div class="row"><label>Rol<select name="rol"${yo ? ' disabled' : ''}><option value="tecnico"${p.rol === 'tecnico' ? ' selected' : ''}>Técnico</option><option value="admin"${p.rol === 'admin' ? ' selected' : ''}>Administrador</option></select></label>
     <label class="chk"><input type="checkbox" name="activo"${p.activo ? ' checked' : ''}${yo ? ' disabled' : ''}> Con acceso</label></div>
-    <button>Guardar</button></form></div>`; }).join('')}
-  <details><summary>Cómo sumar un empleado</summary>
-  <ol class="mut"><li>En Supabase: Authentication → Users → Add user → Create new user, con su mail y una contraseña. Tildá Auto Confirm User.</li><li>Volvé acá, a la pestaña Equipo: aparece con la etiqueta "Sin acceso".</li><li>Tildá "Con acceso", elegí el rol y guardá.</li><li>Desde Trabajos, asignale trabajos. El técnico solo ve los clientes de sus trabajos y nunca ve cobros ni deudas.</li></ol></details></main>`;
+    <button>Guardar</button></form>
+    ${yo ? '' : `<details class="mini"><summary>Restablecer contraseña</summary><form onsubmit="claveEmpleado(event,'${p.id}')"><label>Nueva contraseña (mínimo 8 caracteres)<input name="password" required minlength="8" autocomplete="off"></label><button>Cambiar contraseña</button></form></details>`}</div>`; }).join('')}
+  ${claveHtml()}</main>`;
+}
+
+let ULTIMO = null;
+const genClave = () => Array.from(crypto.getRandomValues(new Uint8Array(10)), b => 'abcdefghjkmnpqrstuvwxyz23456789'[b % 31]).join('');
+
+async function llamarEmpleados(body) {
+  const { data, error } = await sb.functions.invoke('crear-empleado', { body });
+  if (error) {
+    let m = 'No se pudo conectar con el servidor. Revisá que la función esté publicada.';
+    try { m = (await error.context.json()).error || m; } catch (e) { /* queda el mensaje general */ }
+    throw new Error(m);
+  }
+  return data;
+}
+
+async function nuevoEmpleado(e) {
+  e.preventDefault();
+  const f = e.target, err = document.getElementById('ne');
+  err.textContent = '';
+  const d = { accion: 'crear', nombre: f.nombre.value.trim(), email: f.email.value.trim(), password: f.password.value, rol: f.rol.value };
+  try { await llamarEmpleados(d); ULTIMO = d; equipo(); } catch (x) { err.textContent = x.message; }
+}
+
+async function claveEmpleado(e, id) {
+  e.preventDefault();
+  try { await llamarEmpleados({ accion: 'clave', id, password: e.target.password.value }); alert('Contraseña actualizada. Pasásela al empleado.'); equipo(); } catch (x) { alert(x.message); }
+}
+
+async function copiarAcceso() {
+  const t = `Entrá a ${new URL('ficha.html', location.href).href}\nUsuario: ${ULTIMO ? ULTIMO.email : ''}\nContraseña: ${ULTIMO ? ULTIMO.password : ''}`;
+  try { await navigator.clipboard.writeText(t); alert('Datos copiados'); } catch (e) { prompt('Copiá estos datos:', t); }
+}
+
+function claveHtml() {
+  return `<details><summary>Cambiar mi contraseña</summary><form onsubmit="miClave(event)"><label>Nueva contraseña (mínimo 8 caracteres)<input name="password" type="password" required minlength="8" autocomplete="new-password"></label><button>Guardar contraseña</button></form></details>`;
+}
+
+async function miClave(e) {
+  e.preventDefault();
+  const { error } = await sb.auth.updateUser({ password: e.target.password.value });
+  if (error) return alert(error.message);
+  alert('Contraseña actualizada.');
+  e.target.reset();
 }
 
 async function upPerfil(e, id) {
