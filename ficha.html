@@ -5,60 +5,78 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>Ficha técnica · GlaciAR</title>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#0e2a3a;--mut:#5b7685;--bg:#f2f8fb;--card:#fff;--line:#cfe0e8;--blue:#0b6e99;--blue2:#0a5a7e;--err:#b3261e;--tag:#e1f0f6}
-@media (prefers-color-scheme:dark){:root{--ink:#e6f2f7;--mut:#8fb0c0;--bg:#0b1a23;--card:#12262f;--line:#244454;--blue:#4fb3dc;--blue2:#7cc8e8;--err:#ff8a80;--tag:#17323f}}
+:root{--sans:'Space Grotesk',system-ui,sans-serif;--serif:'Source Serif 4',Georgia,serif;--ink:#0f1b2d;--mut:#5d7183;--bg:#f4f7fa;--card:#fff;--line:#dbe5ec;--steel:#2f7ea8;--pri:#0f1b2d;--onpri:#fff;--tint:#e9f2f8;--err:#b3261e;--errbg:#fdecea;--ok:#1b7a3d;--okbg:#e6f4ea;--warn:#a85d00;--warnbg:#fff3df;--sh:0 1px 2px rgba(15,27,45,.06),0 6px 18px rgba(15,27,45,.05)}
+@media (prefers-color-scheme:dark){:root{--ink:#e8f0f6;--mut:#8da3b5;--bg:#0b141d;--card:#111f2b;--line:#223648;--steel:#5fb0d6;--pri:#5fb0d6;--onpri:#06202e;--tint:#16303f;--err:#ff8a80;--errbg:#3a1a1a;--ok:#7fd69a;--okbg:#14301f;--warn:#f0b35a;--warnbg:#3a2a10;--sh:none}}
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Manrope,system-ui,sans-serif}
-header{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:2}
-header h2{flex:1;margin:0;font-size:1.05rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.brand{font-weight:800;color:var(--blue)}
-main{max-width:640px;margin:0 auto;padding:16px}
-.box{max-width:380px;margin:12vh auto 0;padding:24px}
-.box h1{margin:0;font-size:2rem;font-weight:800;color:var(--blue)}
-.box p{color:var(--mut);margin:4px 0 20px}
-label{display:block;font-size:.85rem;font-weight:600;margin:10px 0 4px}
-input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
-textarea{min-height:70px;resize:vertical}
-input:focus,select:focus,textarea:focus,button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
-button{font:inherit;font-weight:600;border:0;border-radius:8px;padding:10px 16px;background:var(--blue);color:#fff;cursor:pointer;margin-top:14px}
-@media (prefers-color-scheme:dark){button{color:#06222e}}
-button:hover{background:var(--blue2)}
-button.ghost{background:none;color:var(--blue);margin:0;padding:6px 8px}
-.err{color:var(--err);min-height:1.2em;margin:8px 0 0!important}
-.item{display:block;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:8px 0 0}
-.item:hover{background:var(--tag)}
-.item b{display:block}.item span{color:var(--mut);font-size:.9rem}
-.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin:12px 0}
-.card h3{margin:0 0 4px;font-size:1.05rem}
-.meta{color:var(--mut);font-size:.9rem;margin:2px 0}
-.vis{border-left:3px solid var(--blue);padding:2px 0 2px 10px;margin:10px 0}
-.vis small{color:var(--mut)}
-details{margin:14px 0 0;border-top:1px solid var(--line);padding-top:10px}
-summary{cursor:pointer;font-weight:600;color:var(--blue)}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+header{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.hin{max-width:680px;margin:0 auto;display:flex;align-items:center;gap:8px;padding:10px 16px}
+header h2{flex:1;margin:0;font-size:1.05rem;font-weight:700;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:1.15rem}.brand b{color:var(--steel)}.brand svg{color:var(--steel)}
+main{max-width:680px;margin:0 auto;padding:20px 16px 56px}
+.mut,.meta{color:var(--mut);font-size:.92rem;margin:4px 0}
+label{display:block;font-size:.82rem;font-weight:500;color:var(--mut);margin:14px 0 6px}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 13px;min-height:44px}
+textarea{min-height:84px;resize:vertical;font-family:var(--serif)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--steel);box-shadow:0 0 0 3px color-mix(in srgb,var(--steel) 22%,transparent)}
+button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var(--steel);outline-offset:2px}
+button{display:inline-flex;align-items:center;justify-content:center;gap:6px;font:inherit;font-weight:600;border:1px solid var(--pri);border-radius:10px;padding:10px 18px;min-height:44px;background:var(--pri);color:var(--onpri);cursor:pointer;margin-top:16px;text-decoration:none}
+button:hover{filter:brightness(1.1)}button:disabled{opacity:.6}
+button.ghost{background:none;border-color:transparent;color:var(--steel);margin:0;padding:8px 10px;min-height:40px}
+button.del{background:none;color:var(--err);border-color:var(--err);margin-left:8px}
+a{color:var(--steel)}
+a.btn,label.btn{display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:.95rem;border:1px solid var(--line);border-radius:10px;padding:9px 16px;min-height:42px;background:var(--card);color:var(--ink);text-decoration:none;cursor:pointer;margin:10px 8px 0 0;box-shadow:var(--sh)}
+a.btn:hover,label.btn:hover{border-color:var(--steel)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin:14px 0;box-shadow:var(--sh)}
+.eqhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.eqhead h2,.eqhead h3{margin:0;font-size:1.2rem;font-weight:700}
+.badge{font-size:.8rem;font-weight:600;padding:3px 11px;border-radius:99px;background:var(--okbg);color:var(--ok);white-space:nowrap}.badge.off{background:var(--errbg);color:var(--err)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px}.chip{font-size:.85rem;padding:2px 10px;border-radius:8px;background:var(--tint)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:0 0 16px}
+.tile{border-radius:14px;padding:14px 16px;border:1px solid var(--line);background:var(--card)}
+.tile span{display:block;font-size:.82rem;color:var(--mut)}.tile b{font-size:1.5rem;font-weight:700}.tile p{margin:6px 0 0}
+.tile.err{background:var(--errbg);border-color:transparent}.tile.err b{color:var(--err)}
+.tile.warn{background:var(--warnbg);border-color:transparent}.tile.warn b{color:var(--warn)}
+.tile.okk{background:var(--okbg);border-color:transparent}.tile.okk b{color:var(--ok)}
+.vis{position:relative;border-left:2px solid var(--line);margin:0 0 0 6px;padding:0 0 14px 18px;font-family:var(--serif);font-size:1.02rem;line-height:1.45}
+.vis::before{content:"";position:absolute;left:-6px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--steel);border:2px solid var(--card)}
+.vis small,.vis .mut{font-family:var(--sans);color:var(--mut);font-size:.86rem}
+.vis small:first-child,.vis .d{font-weight:700;color:var(--steel);font-family:var(--sans);font-size:.86rem}
+b.debe,.debe{color:var(--err);font-family:var(--sans)}.ok{color:var(--ok);font-family:var(--sans);font-weight:600}
+h1{font-size:1.7rem;margin:6px 0 4px;font-weight:700;letter-spacing:-.01em}h3{font-size:1rem;margin:22px 0 8px;font-weight:700}
+h4{margin:28px 0 6px;font-size:.95rem;font-weight:700}
+.err{color:var(--err);min-height:1.2em;margin:8px 0 0}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.chk{display:flex;gap:8px;align-items:center;font-weight:400}.chk input{width:auto}
-h4{margin:20px 0 0;font-size:1rem}
-a{color:var(--blue)}
-.btn{display:inline-block;font-weight:600;border-radius:8px;padding:8px 14px;background:var(--blue);color:#fff;cursor:pointer;margin:10px 0 0}
-@media (prefers-color-scheme:dark){.btn{color:#06222e}}
-button.del{background:none;color:var(--err);border:1px solid var(--err);margin-left:8px}
-button.del:hover{background:var(--tag)}
-.gar{font-weight:800;margin:8px 0 0;color:var(--blue)}.gar.off{color:var(--err)}
-.fotos{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.f{position:relative}.f img{width:96px;height:96px;object-fit:cover;border-radius:8px;border:1px solid var(--line);display:block}
-.x{position:absolute;top:2px;right:2px;margin:0;padding:0 7px;line-height:22px;border-radius:50%;background:rgba(0,0,0,.65);color:#fff}
-details.mini{margin:6px 0 0;padding-top:6px}
-details.mini summary{font-weight:400;font-size:.85rem}
-a.btn{text-decoration:none;margin-right:8px}
-.item span.debe{color:var(--err);font-weight:800;margin-left:8px}
-b.debe{color:var(--err)}
-.card.nuevo{border-left:6px solid #e08a00;background:rgba(224,138,0,.12)}
-.card.nuevo.urg{border-left-color:#c62828;background:rgba(198,40,40,.14)}
-.tag{display:inline-block;font-style:normal;font-size:.75rem;font-weight:800;padding:1px 9px;border-radius:99px;background:#b36b00;color:#fff;margin-right:8px}
-.tag.urg{background:#c62828}
-.item.pend{border-left:6px solid #e08a00}
+.chk{display:flex;gap:10px;align-items:center;font-weight:500;color:var(--ink);margin-top:16px}.chk input{width:22px;height:22px;min-height:0}
+.box{max-width:400px;margin:9vh auto 0;padding:32px 28px;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh)}
+.box .brand{font-size:1.6rem}.box .sub{color:var(--mut);margin:4px 0 8px}.box button{width:100%}
+.item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:8px 0 0;min-height:64px;box-shadow:var(--sh)}
+.item:hover{border-color:var(--steel);filter:none}.item div{min-width:0;flex:1}
+.item .avatar{flex:none;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--tint);color:var(--steel);font-style:normal;font-weight:700}
+.item b{display:block;font-weight:600}
+.item span{display:block;color:var(--mut);font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item span.debe{color:var(--err);font-weight:600;font-family:var(--sans)}
+.item.pend{border-left:5px solid #e08a00}
+.card.nuevo{border-left:6px solid #e08a00;background:rgba(224,138,0,.12)}.card.nuevo.urg{border-left-color:#c62828;background:rgba(198,40,40,.14)}
+.tag{display:inline-block;font-style:normal;font-size:.75rem;font-weight:700;padding:1px 9px;border-radius:99px;background:#b36b00;color:#fff;margin-right:8px}.tag.urg{background:#c62828}
+details{margin:16px 0 0;border-top:1px solid var(--line);padding-top:10px}
+summary{cursor:pointer;font-weight:600;color:var(--steel);padding:6px 0;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+";display:inline-block;width:1.2em;font-weight:700}
+details[open]>summary::before{content:"–"}
+details.mini{margin:6px 0 0;padding-top:4px;border-top:0}details.mini summary{font-weight:500;font-size:.85rem;color:var(--mut)}
+.fotos{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.f{position:relative}.f img{width:96px;height:96px;object-fit:cover;border-radius:10px;border:1px solid var(--line);display:block}
+.x{position:absolute;top:4px;right:4px;margin:0;padding:0;width:24px;height:24px;min-height:0;border-radius:50%;background:rgba(0,0,0,.65);border-color:transparent;color:#fff}
+.tabs{max-width:680px;margin:0 auto;display:flex;gap:4px;padding:0 16px}
+.tabs button{margin:0;border:0;border-bottom:2px solid transparent;border-radius:0;background:none;color:var(--mut);min-height:42px;padding:8px 14px}
+.tabs button.on{color:var(--steel);border-bottom-color:var(--steel)}.tabs button:hover{filter:none;color:var(--ink)}
+.pills{display:flex;gap:6px;margin:0 0 12px;flex-wrap:wrap}
+.pills button{margin:0;min-height:36px;padding:6px 14px;background:var(--card);color:var(--ink);border-color:var(--line)}
+.pills button.on{background:var(--pri);color:var(--onpri);border-color:var(--pri)}
+.job select{margin-top:10px}
 </style>
 </head>
 <body>
@@ -76,43 +94,66 @@ const val = (f, n) => { const v = f.elements[n].value.trim(); return v === '' ? 
 const fmt = d => d ? d.split('-').reverse().join('/') : '—';
 const hoy = () => new Date().toLocaleDateString('en-CA');
 
-function barra(titulo, volver) {
-  return `<header>${volver ? `<button class="ghost" onclick="${volver}">Volver</button>` : '<span class="brand">GlaciAR</span>'}<h2>${esc(titulo)}</h2><button class="ghost" onclick="salir()">Salir</button></header>`;
+const LOGO = '<svg width="26" height="26" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="16" cy="16" r="14"/><path d="M16 7v18M8.2 11.5l15.6 9M23.8 11.5l-15.6 9"/></svg>';
+const CHEV = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>';
+const ini = n => String(n || '?').trim().split(/\s+/).slice(0, 2).map(x => x[0]).join('').toUpperCase();
+function barra(titulo, volver, tab) {
+  const tabs = isAdm() && !volver ? `<nav class="tabs">${[['c', 'Clientes', 'clientes()'], ['t', 'Trabajos', 'trabajos()'], ['e', 'Equipo', 'equipo()']].map(([k, n, f]) => `<button class="${tab === k ? 'on' : ''}" onclick="${f}">${n}</button>`).join('')}</nav>` : '';
+  return `<header><div class="hin">${volver ? `<button class="ghost" onclick="${volver}">${CHEV}Volver</button>` : `<span class="brand">${LOGO}Glaci<b>AR</b></span>`}<h2>${esc(titulo)}</h2><button class="ghost" onclick="salir()">Salir</button></div>${tabs}</header>`;
 }
+
+let ME = null, PERF = {}, CTX = null, PEDS = [], PRE = null, TF = 'pendiente';
+const isAdm = () => !!ME && ME.rol === 'admin';
+const tec = v => (v.tecnico_id && PERF[v.tecnico_id]) ? PERF[v.tecnico_id].nombre : '';
+const TT = ['Mantenimiento', 'Instalación', 'Reparación', 'Diagnóstico', 'Carga de gas', 'Otro'];
 
 async function init() {
   const { data } = await sb.auth.getSession();
-  data.session ? clientes() : login();
+  data.session ? iniciar(data.session.user.id) : login();
+}
+
+async function iniciar(uid) {
+  const { data: me } = await sb.from('perfiles').select('*').eq('id', uid).maybeSingle();
+  if (!me || !me.activo) {
+    ME = null;
+    app.innerHTML = barra('Acceso') + '<main><div class="card"><h3>Tu usuario todavía no tiene acceso</h3><p class="meta">Pedile al administrador que lo habilite.</p></div></main>';
+    return;
+  }
+  ME = me;
+  const r = await sb.from('perfiles').select('id,nombre,rol,activo');
+  PERF = Object.fromEntries((r.data || []).map(p => [p.id, p]));
+  isAdm() ? clientes() : misTrabajos();
 }
 
 function login() {
-  app.innerHTML = `<main class="box"><h1>GlaciAR</h1><p>Ficha técnica de clientes</p>
+  app.innerHTML = `<main class="box"><div class="brand">${LOGO}Glaci<b>AR</b></div><p class="sub">Ficha técnica de clientes</p>
   <form id="f"><label>Email<input name="email" type="email" required autocomplete="username"></label>
   <label>Contraseña<input name="pw" type="password" required autocomplete="current-password"></label>
   <p class="err" id="err"></p><button>Entrar</button></form></main>`;
   document.getElementById('f').onsubmit = async e => {
     e.preventDefault();
     const f = e.target;
-    const { error } = await sb.auth.signInWithPassword({ email: f.email.value.trim(), password: f.pw.value });
+    const { data, error } = await sb.auth.signInWithPassword({ email: f.email.value.trim(), password: f.pw.value });
     if (error) { document.getElementById('err').textContent = 'No se pudo entrar: ' + error.message; return; }
-    clientes();
+    iniciar(data.user.id);
   };
 }
 
-async function salir() { await sb.auth.signOut(); login(); }
+async function salir() { await sb.auth.signOut(); ME = null; login(); }
 
 async function clientes() {
+  CTX = null;
   const { data, error } = await sb.from('clientes').select('id,nombre,telefono,direccion').order('nombre');
-  if (error) { app.innerHTML = barra('Clientes') + `<main><p class="err">${esc(error.message)}</p></main>`; return; }
-  const dv = (await sb.from('visitas').select('monto,pagado,equipos(cliente_id)')).data || [], deuda = {};
-  dv.forEach(v => { const k = v.equipos && v.equipos.cliente_id; if (k) deuda[k] = (deuda[k] || 0) + debe(v); });
-  const pe = (await sb.from('pedidos').select('id,created_at,tipo,mensaje,urgente,clientes(id,nombre)').eq('estado', 'nuevo').order('urgente', { ascending: false }).order('created_at', { ascending: false })).data || [];
-  const conPedido = {};
+  if (error) { app.innerHTML = barra('Clientes', null, 'c') + `<main><p class="err">${esc(error.message)}</p></main>`; return; }
+  const dv = (await sb.from('cobros').select('monto,pagado,visitas(equipos(cliente_id))')).data || [], deuda = {};
+  dv.forEach(v => { const k = v.visitas && v.visitas.equipos && v.visitas.equipos.cliente_id; if (k) deuda[k] = (deuda[k] || 0) + debe(v); });
+  PEDS = (await sb.from('pedidos').select('id,created_at,tipo,mensaje,urgente,clientes(id,nombre)').eq('estado', 'nuevo').order('urgente', { ascending: false }).order('created_at', { ascending: false })).data || [];
+  const pe = PEDS, conPedido = {};
   pe.forEach(p => { if (p.clientes) conPedido[p.clientes.id] = (conPedido[p.clientes.id] === 'urg' || p.urgente) ? 'urg' : 'nuevo'; });
   const total = Object.values(deuda).reduce((a, b) => a + Math.max(0, b), 0);
-  app.innerHTML = barra('Clientes') + `<main>
-  ${total > 0 ? `<p class="gar off">Te deben en total: ${$m(total)}</p>` : ''}
-  ${pe.length ? `<h4>Pedidos nuevos (${pe.length})</h4>` + pe.map(p => `<div class="card nuevo${p.urgente ? ' urg' : ''}"><em class="tag${p.urgente ? ' urg' : ''}">${p.urgente ? 'Urgente' : 'Nuevo'}</em><b>${esc(p.clientes ? p.clientes.nombre : 'Cliente')}</b> · ${esc(p.tipo)}<br><small>${new Date(p.created_at).toLocaleString('es-AR')}</small>${p.mensaje ? `<p>${esc(p.mensaje)}</p>` : ''}${p.clientes ? `<button type="button" class="ghost" onclick="cliente(${p.clientes.id})">Ver cliente</button>` : ''}<button type="button" onclick="resolver(${p.id})">Marcar como resuelto</button></div>`).join('') : ''}
+  app.innerHTML = barra('Clientes', null, 'c') + `<main>
+  ${total > 0 || pe.length ? `<div class="tiles">${total > 0 ? `<div class="tile err"><span>Te deben</span><b>${$m(total)}</b></div>` : ''}${pe.length ? `<div class="tile warn"><span>Pedidos nuevos</span><b>${pe.length}</b></div>` : ''}</div>` : ''}
+  ${pe.length ? `<h4>Pedidos nuevos (${pe.length})</h4>` + pe.map(p => `<div class="card nuevo${p.urgente ? ' urg' : ''}"><em class="tag${p.urgente ? ' urg' : ''}">${p.urgente ? 'Urgente' : 'Nuevo'}</em><b>${esc(p.clientes ? p.clientes.nombre : 'Cliente')}</b> · ${esc(p.tipo)}<br><small>${new Date(p.created_at).toLocaleString('es-AR')}</small>${p.mensaje ? `<p>${esc(p.mensaje)}</p>` : ''}${p.clientes ? `<button type="button" onclick="crearDesdePedido(${p.id})">Crear trabajo</button><button type="button" class="ghost" onclick="cliente(${p.clientes.id})">Ver cliente</button>` : ''}<button type="button" class="ghost" onclick="resolver(${p.id})">Marcar como resuelto</button></div>`).join('') : ''}
   <input id="q" type="search" placeholder="Buscar por nombre, teléfono o dirección">
   <div id="list"></div>
   <details open><summary>Nuevo cliente</summary>
@@ -127,7 +168,7 @@ async function clientes() {
   const pintar = () => {
     const q = document.getElementById('q').value.toLowerCase();
     const r = data.filter(c => [c.nombre, c.telefono, c.direccion].join(' ').toLowerCase().includes(q));
-    list.innerHTML = r.length ? r.map(c => `<button class="item${conPedido[c.id] ? ' pend' : ''}" onclick="cliente(${c.id})"><b>${esc(c.nombre)}${conPedido[c.id] ? ` <em class="tag${conPedido[c.id] === 'urg' ? ' urg' : ''}">${conPedido[c.id] === 'urg' ? 'Urgente' : 'Pedido nuevo'}</em>` : ''}</b><span>${esc([c.telefono, c.direccion].filter(Boolean).join(' · '))}</span>${deuda[c.id] > 0 ? `<span class="debe">Debe ${$m(deuda[c.id])}</span>` : ''}</button>`).join('')
+    list.innerHTML = r.length ? r.map(c => `<button class="item${conPedido[c.id] ? ' pend' : ''}" onclick="cliente(${c.id})"><i class="avatar">${esc(ini(c.nombre))}</i><div><b>${esc(c.nombre)}${conPedido[c.id] ? ` <em class="tag${conPedido[c.id] === 'urg' ? ' urg' : ''}">${conPedido[c.id] === 'urg' ? 'Urgente' : 'Pedido nuevo'}</em>` : ''}</b><span>${esc([c.telefono, c.direccion].filter(Boolean).join(' · '))}</span>${deuda[c.id] > 0 ? `<span class="debe">Debe ${$m(deuda[c.id])}</span>` : ''}</div></button>`).join('')
       : '<p class="meta">Todavía no hay clientes. Cargá el primero abajo.</p>';
   };
   document.getElementById('q').oninput = pintar;
@@ -142,13 +183,13 @@ async function addCliente(e) {
   cliente(data.id);
 }
 
-const CF=['nombre','telefono','direccion','notas'],EF=['marca','modelo','tipo','frigorias','gas','fecha_instalacion','ultimo_mantenimiento'],VF=['fecha','trabajo_hecho','pendiente','notas','repuestos','costo_repuestos','monto','pagado','temp_ambiente','temp_salida'];
+const CF=['nombre','telefono','direccion','notas'],EF=['marca','modelo','tipo','frigorias','gas','fecha_instalacion','ultimo_mantenimiento'],VF=['fecha','trabajo_hecho','pendiente','notas','repuestos','temp_ambiente','temp_salida'],MF=['costo_repuestos','monto','pagado'];
 const datos=(f,l)=>Object.fromEntries(l.map(n=>[n,val(f,n)]));
 const opt=(l,v)=>'<option value="">—</option>'+l.map(x=>`<option${x===v?' selected':''}>${x}</option>`).join('');
 const campos={
   cliente:c=>`<label>Nombre<input name="nombre" required value="${esc(c.nombre)}"></label><div class="row"><label>Teléfono<input name="telefono" type="tel" value="${esc(c.telefono)}"></label><label>Dirección<input name="direccion" value="${esc(c.direccion)}"></label></div><label>Notas<textarea name="notas">${esc(c.notas)}</textarea></label>`,
   equipo:q=>`<div class="row"><label>Marca<input name="marca" value="${esc(q.marca)}"></label><label>Modelo<input name="modelo" value="${esc(q.modelo)}"></label></div><div class="row"><label>Tipo<select name="tipo">${opt(['Split','Inverter','Ventana','Portátil','Otro'],q.tipo)}</select></label><label>Frigorías<input name="frigorias" type="number" inputmode="numeric" min="0" value="${esc(q.frigorias)}"></label></div><div class="row"><label>Gas<select name="gas">${opt(['R410A','R32','R22','Otro'],q.gas)}</select></label><label>Instalación<input name="fecha_instalacion" type="date" value="${esc(q.fecha_instalacion)}"></label></div><label>Último mantenimiento (reinicia la garantía)<input name="ultimo_mantenimiento" type="date" value="${esc(q.ultimo_mantenimiento)}"></label>`,
-  visita:v=>`<label>Fecha<input name="fecha" type="date" required value="${esc(v.fecha)}"></label><label>Trabajo hecho<textarea name="trabajo_hecho" required>${esc(v.trabajo_hecho)}</textarea></label><label>Qué falta o recomiendo<input name="pendiente" value="${esc(v.pendiente)}"></label><div class="row"><label>Temp. ambiente, sensor unidad interior (°C)<input name="temp_ambiente" type="number" inputmode="decimal" step="any" value="${esc(v.temp_ambiente)}"></label><label>Temp. de salida unidad interior (°C)<input name="temp_salida" type="number" inputmode="decimal" step="any" value="${esc(v.temp_salida)}"></label></div><label>Notas<input name="notas" value="${esc(v.notas)}"></label><label>Repuestos usados<input name="repuestos" value="${esc(v.repuestos)}"></label><div class="row"><label>Costo de repuestos ($)<input name="costo_repuestos" type="number" inputmode="decimal" min="0" step="any" value="${esc(v.costo_repuestos)}"></label><label>Monto a cobrar ($)<input name="monto" type="number" inputmode="decimal" min="0" step="any" value="${esc(v.monto)}"></label></div><label>Pagado ($)<input name="pagado" type="number" inputmode="decimal" min="0" step="any" value="${esc(v.pagado)}"></label>`
+  visita:(v,adm)=>`<label>Fecha<input name="fecha" type="date" required value="${esc(v.fecha)}"></label><label>Trabajo hecho<textarea name="trabajo_hecho" required>${esc(v.trabajo_hecho)}</textarea></label><label>Qué falta o recomiendo<input name="pendiente" value="${esc(v.pendiente)}"></label><div class="row"><label>Temp. ambiente, sensor unidad interior (°C)<input name="temp_ambiente" type="number" inputmode="decimal" step="any" value="${esc(v.temp_ambiente)}"></label><label>Temp. de salida unidad interior (°C)<input name="temp_salida" type="number" inputmode="decimal" step="any" value="${esc(v.temp_salida)}"></label></div><label>Notas<input name="notas" value="${esc(v.notas)}"></label><label>Repuestos usados<input name="repuestos" value="${esc(v.repuestos)}"></label>${adm ? `<div class="row"><label>Costo de repuestos ($)<input name="costo_repuestos" type="number" inputmode="decimal" min="0" step="any" value="${esc(v.costo_repuestos)}"></label><label>Monto a cobrar ($)<input name="monto" type="number" inputmode="decimal" min="0" step="any" value="${esc(v.monto)}"></label></div><label>Pagado ($)<input name="pagado" type="number" inputmode="decimal" min="0" step="any" value="${esc(v.pagado)}"></label>` : ''}`
 };
 
 const $m = n => '$' + Number(n || 0).toLocaleString('es-AR');
@@ -173,8 +214,8 @@ function wa(t) {
 }
 async function exportar() {
   const wb = XLSX.utils.book_new();
-  for (const t of ['clientes', 'equipos', 'visitas']) {
-    const { data, error } = await sb.from(t).select('*').order('id');
+  for (const [t, o] of [['clientes', 'id'], ['equipos', 'id'], ['visitas', 'id'], ['cobros', 'visita_id'], ['trabajos', 'id'], ['perfiles', 'created_at']]) {
+    const { data, error } = await sb.from(t).select('*').order(o);
     if (error) return alert(error.message);
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(data), t);
   }
@@ -187,7 +228,7 @@ async function copiarLink(t) {
 }
 async function nuevoLink(id) {
   if (!confirm('El link anterior deja de funcionar. ¿Generar uno nuevo?')) return;
-  const { error } = await sb.from('clientes').update({ token: crypto.randomUUID() }).eq('id', id);
+  const { error } = await sb.from('cliente_links').update({ token: crypto.randomUUID() }).eq('cliente_id', id);
   if (error) return alert(error.message);
   cliente(id);
 }
@@ -207,46 +248,56 @@ function garantia(f) {
   return { txt: 'Garantía vencida', cls: 'off' };
 }
 
-async function cliente(id) {
+async function cliente(id, jobId, back) {
+  if (jobId !== undefined) CTX = { cid: id, job: jobId, back: back || 'clientes()' };
+  else if (!CTX || CTX.cid !== id) CTX = { cid: id, job: null, back: isAdm() ? 'clientes()' : 'misTrabajos()' };
+  const adm = isAdm();
   const { data: c, error } = await sb.from('clientes').select('*, equipos(*)').eq('id', id).single();
   if (error) return alert(error.message);
-  const link = new URL('cliente.html?c=' + c.token, location.href).href;
+  const tk = adm ? ((await sb.from('cliente_links').select('token').eq('cliente_id', id).maybeSingle()).data || {}).token : null;
+  const link = tk ? new URL('cliente.html?c=' + tk, location.href).href : '';
+  const job = CTX.job ? (await sb.from('trabajos').select('*').eq('id', CTX.job).maybeSingle()).data : null;
   const ids = c.equipos.map(q => q.id);
   let vis = [], fotos = [], urls = {};
   if (ids.length) {
-    vis = (await sb.from('visitas').select('*').in('equipo_id', ids).order('fecha', { ascending: false })).data || [];
+    vis = ((await sb.from('visitas').select(adm ? '*, cobros(*)' : '*').in('equipo_id', ids).order('fecha', { ascending: false })).data || []).map(v => { const co = adm ? (Array.isArray(v.cobros) ? v.cobros[0] : v.cobros) : null; return { ...v, ...(co || {}) }; });
     fotos = (await sb.from('fotos').select('*').in('equipo_id', ids).order('created_at')).data || [];
     if (fotos.length) {
       const r = await sb.storage.from('fotos').createSignedUrls(fotos.map(x => x.path), 3600);
       (r.data || []).forEach(x => urls[x.path] = x.signedUrl);
     }
   }
+  const banner = job ? `<div class="card nuevo${job.urgente ? ' urg' : ''}"><em class="tag${job.urgente ? ' urg' : ''}">${job.urgente ? 'Urgente' : 'Trabajo asignado'}</em><b>${esc(job.tipo)}</b>${job.fecha_programada ? ' · ' + fmt(job.fecha_programada) : ''}${job.descripcion ? `<p>${esc(job.descripcion)}</p>` : ''}
+    <label for="jn">Anotaciones del trabajo</label><textarea id="jn">${esc(job.notas)}</textarea>
+    <button type="button" class="ghost" onclick="guardarNotas(${job.id}, ${c.id})">Guardar anotaciones</button>
+    ${job.estado === 'pendiente' ? `<button type="button" onclick="completar(${job.id}, ${c.id})">Marcar trabajo como realizado</button>` : `<p class="ok">Trabajo ${esc(job.estado)}${job.completado_at ? ' el ' + new Date(job.completado_at).toLocaleDateString('es-AR') : ''}</p>`}</div>` : '';
   const equipos = c.equipos.map(q => {
     const vs = vis.filter(v => v.equipo_id === q.id), fs = fotos.filter(x => x.equipo_id === q.id), g = garantia([q.fecha_instalacion, q.ultimo_mantenimiento].filter(Boolean).sort().pop());
-    return `<div class="card"><h3>${esc([q.marca, q.modelo].filter(Boolean).join(' ') || 'Equipo sin nombre')}</h3>
-    <p class="meta">${esc([q.tipo, q.frigorias ? q.frigorias + ' frigorías' : null, q.gas].filter(Boolean).join(' · '))}</p>
-    <p class="meta">Instalado: ${fmt(q.fecha_instalacion)} · Último mantenimiento: ${fmt(q.ultimo_mantenimiento)}</p>
-    ${g ? `<p class="gar ${g.cls}">${g.txt}</p>` : ''}
-    <div class="fotos">${fs.map(x => `<div class="f"><a href="${urls[x.path] || '#'}" target="_blank" rel="noopener"><img src="${urls[x.path] || ''}" alt="Foto del equipo" loading="lazy"></a><button type="button" class="x" aria-label="Borrar foto" onclick="delFoto(${x.id},'${x.path}',${c.id})">×</button></div>`).join('')}</div>
+    return `<div class="card"><div class="eqhead"><h3>${esc([q.marca, q.modelo].filter(Boolean).join(' ') || 'Equipo sin nombre')}</h3>${g ? `<span class="badge ${g.cls}">${g.txt}</span>` : ''}</div>
+    <div class="chips">${[q.tipo, q.frigorias ? q.frigorias + ' frigorías' : null, q.gas].filter(Boolean).map(x => `<span class="chip">${esc(x)}</span>`).join('')}</div>
+    <p class="meta">Instalado ${fmt(q.fecha_instalacion)} · Último mantenimiento ${fmt(q.ultimo_mantenimiento)}</p>
+    <div class="fotos">${fs.map(x => `<div class="f"><a href="${urls[x.path] || '#'}" target="_blank" rel="noopener"><img src="${urls[x.path] || ''}" alt="Foto del equipo" loading="lazy"></a>${adm ? `<button type="button" class="x" aria-label="Borrar foto" onclick="delFoto(${x.id},'${x.path}',${c.id})">×</button>` : ''}</div>`).join('')}</div>
     <label class="btn">Subir fotos<input type="file" accept="image/*" multiple hidden onchange="subir(this,${q.id},${c.id})"></label>
     <h4>Visitas</h4>
-    ${vs.map(v => `<div class="vis"><small>${fmt(v.fecha)}</small><br>${esc(v.trabajo_hecho || 'Sin detalle')}${v.pendiente ? `<br><small>Falta: ${esc(v.pendiente)}</small>` : ''}${v.notas ? `<br><small>${esc(v.notas)}</small>` : ''}${cobro(v)}
-      <details class="mini"><summary>Editar o borrar</summary><form onsubmit="upVisita(event,${v.id},${c.id})">${campos.visita(v)}<button>Guardar cambios</button><button type="button" class="del" onclick="borrar('visitas',${v.id},${c.id},'¿Borrar esta visita?')">Borrar</button></form></details></div>`).join('') || '<p class="meta">Sin visitas cargadas.</p>'}
+    ${vs.map(v => `<div class="vis"><small>${fmt(v.fecha)}${tec(v) ? ' · ' + esc(tec(v)) : ''}</small><br>${esc(v.trabajo_hecho || 'Sin detalle')}${v.pendiente ? `<br><small>Falta: ${esc(v.pendiente)}</small>` : ''}${v.notas ? `<br><small>${esc(v.notas)}</small>` : ''}${cobro(v)}
+      ${adm || v.tecnico_id === ME.id ? `<details class="mini"><summary>Editar${adm ? ' o borrar' : ''}</summary><form onsubmit="upVisita(event,${v.id},${c.id})">${campos.visita(v, adm)}<button>Guardar cambios</button>${adm ? `<button type="button" class="del" onclick="borrar('visitas',${v.id},${c.id},'¿Borrar esta visita?')">Borrar</button>` : ''}</form></details>` : ''}</div>`).join('') || '<p class="meta">Sin visitas cargadas.</p>'}
     <details><summary>Cargar visita</summary>
-    <form onsubmit="addVisita(event,${q.id},${c.id})">${campos.visita({ fecha: hoy() })}
+    <form onsubmit="addVisita(event,${q.id},${c.id})">${campos.visita({ fecha: hoy() }, adm)}
       <label class="chk"><input type="checkbox" name="mant"> Fue mantenimiento (actualiza la fecha del equipo)</label>
       <button>Guardar visita</button></form></details>
-    <details><summary>Editar o borrar equipo</summary>
-    <form onsubmit="upEquipo(event,${q.id},${c.id})">${campos.equipo(q)}<button>Guardar cambios</button><button type="button" class="del" onclick="borrar('equipos',${q.id},${c.id},'¿Borrar este equipo con sus visitas y fotos?')">Eliminar equipo</button></form></details></div>`;
+    <details><summary>Editar${adm ? ' o borrar' : ''} equipo</summary>
+    <form onsubmit="upEquipo(event,${q.id},${c.id})">${campos.equipo(q)}<button>Guardar cambios</button>${adm ? `<button type="button" class="del" onclick="borrar('equipos',${q.id},${c.id},'¿Borrar este equipo con sus visitas y fotos?')">Eliminar equipo</button>` : ''}</form></details></div>`;
   }).join('');
-  app.innerHTML = barra(c.nombre, 'clientes()') + `<main>
+  const dtot = vis.reduce((a, v) => a + debe(v), 0);
+  app.innerHTML = barra(c.nombre, CTX.back) + `<main>
+  ${banner}
   <p class="meta">${esc([c.telefono, c.direccion].filter(Boolean).join(' · ') || 'Sin teléfono ni dirección')}</p>
   <p>${c.telefono ? `<a class="btn" href="tel:${esc(c.telefono)}">Llamar</a><a class="btn" target="_blank" rel="noopener" href="${wa(c.telefono)}">WhatsApp</a>` : ''}${c.direccion ? `<a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(c.direccion)}">Cómo llegar</a>` : ''}</p>
-  ${(() => { const d = vis.reduce((a, v) => a + debe(v), 0); return d > 0 ? `<p class="gar off">Debe en total: ${$m(d)}</p>` : ''; })()}
   ${c.notas ? `<p>${esc(c.notas)}</p>` : ''}
-  <p>${c.telefono ? `<a class="btn" target="_blank" rel="noopener" href="${wa(c.telefono)}?text=${encodeURIComponent('Hola ' + c.nombre + '! Acá podés ver el estado de tu equipo de GlaciAR y pedir turno: ' + link)}">Enviar link al cliente</a>` : ''}<button type="button" class="ghost" onclick="copiarLink('${c.token}')">Copiar link</button><button type="button" class="ghost" onclick="nuevoLink(${c.id})">Generar link nuevo</button></p>
+  ${adm && dtot > 0 ? `<div class="tiles"><div class="tile err"><span>Debe en total</span><b>${$m(dtot)}</b></div></div>` : ''}
+  ${adm ? `<p>${link && c.telefono ? `<a class="btn" target="_blank" rel="noopener" href="${wa(c.telefono)}?text=${encodeURIComponent('Hola ' + c.nombre + '! Acá podés ver el estado de tu equipo de GlaciAR y pedir turno: ' + link)}">Enviar link al cliente</a>` : ''}${link ? `<button type="button" class="ghost" onclick="copiarLink('${tk}')">Copiar link</button><button type="button" class="ghost" onclick="nuevoLink(${c.id})">Generar link nuevo</button>` : ''}<button type="button" class="ghost" onclick="PRE = { cliente_id: ${c.id} }; trabajos()">Crear trabajo</button></p>
   <details><summary>Editar o borrar cliente</summary>
-  <form onsubmit="upCliente(event,${c.id})">${campos.cliente(c)}<button>Guardar cambios</button><button type="button" class="del" onclick="borrar('clientes',${c.id},0,'¿Borrar a este cliente con todos sus equipos, visitas y fotos?')">Eliminar cliente</button></form></details>
+  <form onsubmit="upCliente(event,${c.id})">${campos.cliente(c)}<button>Guardar cambios</button><button type="button" class="del" onclick="borrar('clientes',${c.id},0,'¿Borrar a este cliente con todos sus equipos, visitas y fotos?')">Eliminar cliente</button></form></details>` : ''}
   <h4>Equipos</h4>${equipos || '<p class="meta">Este cliente no tiene equipos cargados.</p>'}
   <details ${c.equipos.length ? '' : 'open'}><summary>Agregar equipo</summary>
   <form onsubmit="addEquipo(event,${c.id})">${campos.equipo({})}<button>Guardar equipo</button></form></details></main>`;
@@ -262,10 +313,18 @@ async function addEquipo(e, cid) {
 async function addVisita(e, eid, cid) {
   e.preventDefault();
   const f = e.target, d = datos(f, VF);
-  const { error } = await sb.from('visitas').insert({ equipo_id: eid, ...d });
+  const { data, error } = await sb.from('visitas').insert({ equipo_id: eid, ...d, trabajo_id: (CTX && CTX.job) || null, tecnico_id: ME.id }).select('id').single();
   if (error) return alert(error.message);
+  if (isAdm()) await guardarCobro(data.id, f);
   if (f.elements.mant.checked) await sb.from('equipos').update({ ultimo_mantenimiento: d.fecha }).eq('id', eid);
   cliente(cid);
+}
+
+async function guardarCobro(vid, f) {
+  const m = datos(f, MF);
+  if (Object.values(m).every(x => x == null)) { await sb.from('cobros').delete().eq('visita_id', vid); return; }
+  const { error } = await sb.from('cobros').upsert({ visita_id: vid, ...m });
+  if (error) alert(error.message);
 }
 
 async function guardar(tabla, id, d, cid) {
@@ -275,7 +334,13 @@ async function guardar(tabla, id, d, cid) {
 }
 function upCliente(e, id) { e.preventDefault(); guardar('clientes', id, datos(e.target, CF), id); }
 function upEquipo(e, id, cid) { e.preventDefault(); guardar('equipos', id, datos(e.target, EF), cid); }
-function upVisita(e, id, cid) { e.preventDefault(); guardar('visitas', id, datos(e.target, VF), cid); }
+async function upVisita(e, id, cid) {
+  e.preventDefault();
+  const f = e.target, { error } = await sb.from('visitas').update(datos(f, VF)).eq('id', id);
+  if (error) return alert(error.message);
+  if (isAdm()) await guardarCobro(id, f);
+  cliente(cid);
+}
 
 async function limpiar(ids) {
   if (!ids.length) return;
@@ -329,6 +394,136 @@ async function delFoto(id, path, cid) {
   const { error } = await sb.from('fotos').delete().eq('id', id);
   if (error) return alert(error.message);
   cliente(cid);
+}
+
+
+const SELJ = 'id,tipo,descripcion,fecha_programada,urgente,estado,completado_at,notas,tecnico_id,clientes(id,nombre,direccion),equipos(marca,modelo)';
+
+function jobCard(t, adm) {
+  const c = t.clientes || {}, eq = t.equipos ? [t.equipos.marca, t.equipos.modelo].filter(Boolean).join(' ') : '';
+  const pend = t.estado === 'pendiente';
+  const tcs = adm ? `<select onchange="asignar(${t.id}, this.value)" aria-label="Técnico asignado"><option value="">Sin asignar</option>${Object.values(PERF).filter(p => p.activo).map(p => `<option value="${p.id}"${p.id === t.tecnico_id ? ' selected' : ''}>${esc(p.nombre)}</option>`).join('')}</select>` : '';
+  return `<div class="card job${pend ? ' nuevo' : ''}${pend && t.urgente ? ' urg' : ''}">
+  ${t.urgente ? '<em class="tag urg">Urgente</em>' : ''}<b>${esc(c.nombre || 'Cliente')}</b> · ${esc(t.tipo)}
+  <p class="meta">${esc([eq, c.direccion, t.fecha_programada ? 'Fecha ' + fmt(t.fecha_programada) : ''].filter(Boolean).join(' · '))}</p>
+  ${t.descripcion ? `<p>${esc(t.descripcion)}</p>` : ''}${t.notas ? `<p class="meta">Anotaciones: ${esc(t.notas)}</p>` : ''}
+  ${tcs}
+  <button type="button" onclick="cliente(${c.id}, ${t.id}, '${adm ? 'trabajos()' : 'misTrabajos()'}')">Abrir ficha</button>
+  ${adm ? (pend ? `<button type="button" class="ghost" onclick="estadoTrabajo(${t.id}, 'realizado')">Marcar realizado</button><button type="button" class="ghost" onclick="estadoTrabajo(${t.id}, 'cancelado')">Cancelar</button>` : `<button type="button" class="ghost" onclick="estadoTrabajo(${t.id}, 'pendiente')">Reabrir</button>`) : ''}</div>`;
+}
+
+async function misTrabajos() {
+  CTX = null;
+  const q = e => sb.from('trabajos').select(SELJ).eq('tecnico_id', ME.id).eq('estado', e);
+  const [p, r] = await Promise.all([
+    q('pendiente').order('urgente', { ascending: false }).order('fecha_programada', { ascending: true, nullsFirst: false }),
+    q('realizado').order('completado_at', { ascending: false }).limit(10)]);
+  app.innerHTML = barra('Mis trabajos') + `<main><h4>Pendientes (${(p.data || []).length})</h4>
+  ${(p.data || []).map(t => jobCard(t, false)).join('') || '<p class="meta">No tenés trabajos pendientes.</p>'}
+  ${(r.data || []).length ? '<h4>Últimos realizados</h4>' + r.data.map(t => jobCard(t, false)).join('') : ''}</main>`;
+}
+
+async function trabajos(f) {
+  CTX = null;
+  if (f) TF = f;
+  const [t, cl] = await Promise.all([
+    sb.from('trabajos').select(SELJ).eq('estado', TF).order('urgente', { ascending: false }).order('fecha_programada', { ascending: true, nullsFirst: false }),
+    sb.from('clientes').select('id,nombre').order('nombre')]);
+  app.innerHTML = barra('Trabajos', null, 't') + `<main>
+  <div class="pills">${[['pendiente', 'Pendientes'], ['realizado', 'Realizados'], ['cancelado', 'Cancelados']].map(([k, n]) => `<button class="${TF === k ? 'on' : ''}" onclick="trabajos('${k}')">${n}</button>`).join('')}</div>
+  ${(t.data || []).map(x => jobCard(x, true)).join('') || '<p class="meta">No hay trabajos en esta lista.</p>'}
+  <details ${PRE ? 'open' : ''}><summary>Nuevo trabajo</summary>
+  <form id="nt" onsubmit="addTrabajo(event)">
+    <label>Cliente<select name="cliente_id" required onchange="cargarEquipos(this.value)"><option value="">Elegir…</option>${(cl.data || []).map(c => `<option value="${c.id}">${esc(c.nombre)}</option>`).join('')}</select></label>
+    <label>Equipo<select name="equipo_id" id="eqsel"><option value="">Sin equipo definido</option></select></label>
+    <div class="row"><label>Tipo<select name="tipo">${TT.map(x => `<option>${x}</option>`).join('')}</select></label><label>Fecha<input name="fecha_programada" type="date" value="${hoy()}"></label></div>
+    <label>Técnico<select name="tecnico_id"><option value="">Sin asignar</option>${Object.values(PERF).filter(p => p.activo).map(p => `<option value="${p.id}">${esc(p.nombre)}</option>`).join('')}</select></label>
+    <label>Descripción<textarea name="descripcion"></textarea></label>
+    <label class="chk"><input type="checkbox" name="urgente"> Urgente</label>
+    <button>Crear trabajo</button></form></details></main>`;
+  if (PRE) {
+    const fm = document.getElementById('nt');
+    fm.cliente_id.value = PRE.cliente_id;
+    await cargarEquipos(PRE.cliente_id);
+    if (PRE.descripcion) fm.descripcion.value = PRE.descripcion;
+    if (PRE.urgente) fm.urgente.checked = true;
+  }
+}
+
+async function cargarEquipos(cid) {
+  const el = document.getElementById('eqsel');
+  const { data } = cid ? await sb.from('equipos').select('id,marca,modelo').eq('cliente_id', cid) : { data: [] };
+  el.innerHTML = '<option value="">Sin equipo definido</option>' + (data || []).map(q => `<option value="${q.id}">${esc([q.marca, q.modelo].filter(Boolean).join(' ') || 'Equipo')}</option>`).join('');
+}
+
+async function addTrabajo(e) {
+  e.preventDefault();
+  const f = e.target;
+  const { error } = await sb.from('trabajos').insert({ cliente_id: val(f, 'cliente_id'), equipo_id: val(f, 'equipo_id'), tipo: f.tipo.value, descripcion: val(f, 'descripcion'), fecha_programada: val(f, 'fecha_programada'), tecnico_id: val(f, 'tecnico_id'), urgente: f.urgente.checked });
+  if (error) return alert(error.message);
+  if (PRE && PRE.pedido_id) await sb.from('pedidos').update({ estado: 'resuelto' }).eq('id', PRE.pedido_id);
+  PRE = null;
+  trabajos('pendiente');
+}
+
+function crearDesdePedido(id) {
+  const p = PEDS.find(x => x.id === id);
+  if (!p || !p.clientes) return;
+  PRE = { pedido_id: id, cliente_id: p.clientes.id, descripcion: [p.tipo, p.mensaje].filter(Boolean).join(': '), urgente: !!p.urgente };
+  trabajos('pendiente');
+}
+
+async function asignar(id, v) {
+  const { error } = await sb.from('trabajos').update({ tecnico_id: v || null }).eq('id', id);
+  if (error) alert(error.message);
+}
+
+async function estadoTrabajo(id, e) {
+  const { error } = await sb.from('trabajos').update({ estado: e, completado_at: e === 'realizado' ? new Date().toISOString() : null }).eq('id', id);
+  if (error) return alert(error.message);
+  trabajos();
+}
+
+async function guardarNotas(id, cid) {
+  const { error } = await sb.from('trabajos').update({ notas: document.getElementById('jn').value.trim() || null }).eq('id', id);
+  if (error) return alert(error.message);
+  cliente(cid);
+}
+
+async function completar(id, cid) {
+  const n = (await sb.from('visitas').select('id', { count: 'exact', head: true }).eq('trabajo_id', id)).count;
+  const msg = n ? '¿Marcar este trabajo como realizado?' : 'Todavía no cargaste ninguna visita con el detalle del trabajo. ¿Marcarlo como realizado igual?';
+  if (!confirm(msg)) return;
+  const upd = { estado: 'realizado', completado_at: new Date().toISOString() };
+  const nt = document.getElementById('jn');
+  if (nt) upd.notas = nt.value.trim() || null;
+  const { error } = await sb.from('trabajos').update(upd).eq('id', id);
+  if (error) return alert(error.message);
+  isAdm() ? cliente(cid) : misTrabajos();
+}
+
+async function equipo() {
+  CTX = null;
+  const { data, error } = await sb.from('perfiles').select('*').order('created_at');
+  if (error) { app.innerHTML = barra('Equipo', null, 'e') + `<main><p class="err">${esc(error.message)}</p></main>`; return; }
+  PERF = Object.fromEntries(data.map(p => [p.id, p]));
+  app.innerHTML = barra('Equipo', null, 'e') + `<main>${data.map(p => { const yo = p.id === ME.id; return `<div class="card"><form onsubmit="upPerfil(event,'${p.id}')">
+    <b>${esc(p.email)}</b>${p.activo ? '' : ' <em class="tag urg">Sin acceso</em>'}
+    <label>Nombre<input name="nombre" required value="${esc(p.nombre)}"></label>
+    <div class="row"><label>Rol<select name="rol"${yo ? ' disabled' : ''}><option value="tecnico"${p.rol === 'tecnico' ? ' selected' : ''}>Técnico</option><option value="admin"${p.rol === 'admin' ? ' selected' : ''}>Administrador</option></select></label>
+    <label class="chk"><input type="checkbox" name="activo"${p.activo ? ' checked' : ''}${yo ? ' disabled' : ''}> Con acceso</label></div>
+    <button>Guardar</button></form></div>`; }).join('')}
+  <details><summary>Cómo sumar un empleado</summary>
+  <ol class="mut"><li>En Supabase: Authentication → Users → Add user → Create new user, con su mail y una contraseña. Tildá Auto Confirm User.</li><li>Volvé acá, a la pestaña Equipo: aparece con la etiqueta "Sin acceso".</li><li>Tildá "Con acceso", elegí el rol y guardá.</li><li>Desde Trabajos, asignale trabajos. El técnico solo ve los clientes de sus trabajos y nunca ve cobros ni deudas.</li></ol></details></main>`;
+}
+
+async function upPerfil(e, id) {
+  e.preventDefault();
+  const f = e.target, d = { nombre: f.nombre.value.trim() };
+  if (!f.rol.disabled) { d.rol = f.rol.value; d.activo = f.activo.checked; }
+  const { error } = await sb.from('perfiles').update(d).eq('id', id);
+  if (error) return alert(error.message);
+  equipo();
 }
 
 init();

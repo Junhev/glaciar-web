@@ -4,6 +4,16 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>GlaciAR — Climatización para Hogares y Comercios</title>
+<meta name="description" content="Instalación, mantenimiento y reparación de aires acondicionados en Lomas de Zamora y zona sur del GBA. Presupuesto previo y garantía por escrito." />
+<meta name="theme-color" content="#f4f7fa" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'%3E%3Ccircle cx='17' cy='17' r='15.5' fill='none' stroke='%230a1628' stroke-width='1.5'/%3E%3Cpath d='M17 7v20M9 12l16 10M9 22l16-10' stroke='%235fb8d9' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="es_AR" />
+<meta property="og:title" content="GlaciAR — Climatización para Hogares y Comercios" />
+<meta property="og:description" content="Instalación, mantenimiento y reparación de aires acondicionados en Lomas de Zamora y zona sur del GBA. Presupuesto previo y garantía por escrito." />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HVACBusiness","name":"GlaciAR","description":"Instalación, mantenimiento y reparación de aires acondicionados en Lomas de Zamora y zona sur del GBA. Presupuesto previo y garantía por escrito.","telephone":"+54 11 3563-0466","email":"glaciar.climatizacion@gmail.com","areaServed":"Lomas de Zamora y zona sur del GBA","openingHours":"Mo-Sa 08:00-18:00"}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
@@ -300,6 +310,35 @@
     .testi-grid { grid-template-columns: repeat(3, 1fr); }
     .cta-inner { flex-direction: row; align-items: center; justify-content: space-between; }
   }
+
+  /* ===== AJUSTES DE PULIDO ===== */
+  :root { --ice-text: #256f91; }
+  section, .cta-band { scroll-margin-top: 72px; }
+  .hero-eyebrow, .sec-eyebrow, .svc-index, .svc-tag, .gauge-unit, .meta-icon { color: var(--ice-text); }
+  .hero-eyebrow::before, .sec-eyebrow::before { background: var(--ice-text); }
+  .gauge-label, .field-label, .svc-tag { font-size: 11px; }
+  .svc-content p, .proc-text p, .tools-copy p { font-size: 15px; }
+  .std-desc { font-size: 13.5px; }
+  .cform input, .cform select, .cform textarea { font-size: 16px; min-height: 48px; border-radius: 6px; }
+  .cform textarea { min-height: 96px; }
+  .cform input:focus, .cform select:focus, .cform textarea:focus { box-shadow: 0 0 0 3px rgba(58,143,176,0.18); }
+  .nav-cta, .btn-primary, .btn-ghost, .btn-light, .submit { transition: background .18s, color .18s, transform .18s, box-shadow .18s; }
+  .btn-primary, .btn-ghost, .btn-light, .submit { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; }
+  .nav-cta:hover, .btn-primary:hover, .submit:hover { background: var(--navy-light); transform: translateY(-1px); box-shadow: 0 6px 16px rgba(10,22,40,0.18); }
+  .btn-ghost:hover { background: var(--navy); color: var(--paper); }
+  .btn-light:hover { background: #8dd0e8; transform: translateY(-1px); }
+  .wa-float { transition: transform .18s; }
+  .wa-float:hover { transform: scale(1.06); }
+  .nav-links { display: none; gap: 1.8rem; margin-left: auto; margin-right: 1.8rem; }
+  .nav-links a { font-family: var(--display); font-size: 14px; font-weight: 500; color: var(--navy); text-decoration: none; }
+  .nav-links a:hover { color: var(--ice-text); }
+  @media (min-width: 760px) { .nav-links { display: flex; } }
+  .meta-val a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--line); }
+  .meta-val a:hover { border-color: var(--ice-deep); }
+  .f-err { min-height: 1.3em; color: #b3261e; font-family: var(--display); font-size: 13px; }
+  .footer-contact { display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; font-family: var(--mono); font-size: 12px; color: #8fa3ba; }
+  .footer-contact a { color: #8fa3ba; text-decoration: none; }
+  .footer-contact a:hover { color: var(--ice); }
 </style>
 </head>
 <body>
@@ -314,6 +353,7 @@
     </div>
     <span class="brand-text">Glaci<em>AR</em></span>
   </a>
+  <div class="nav-links"><a href="#servicios">Servicios</a><a href="#metodologia">Metodología</a><a href="#contacto">Contacto</a></div>
   <a href="#contacto" class="nav-cta">Solicitar presupuesto</a>
 </nav>
 
@@ -378,7 +418,7 @@
   <div class="hero-inner">
     <div class="hero-eyebrow">Climatización para hogares y comercios · Zona Sur, Buenos Aires</div>
     <h1>Precisión técnica<br>para cada <em>grado</em><br>de temperatura</h1>
-    <p class="hero-lede">Instalación, mantenimiento y reparación de sistemas de climatización en hogares, departamentos y locales comerciales. Servicio técnico certificado con garantía escrita.</p>
+    <p class="hero-lede">Instalación, mantenimiento y reparación de sistemas de climatización en hogares, departamentos y locales comerciales. Servicio técnico profesional con garantía escrita de 15 días.</p>
     <div class="hero-actions">
       <a href="#contacto" class="btn-primary">Solicitar presupuesto</a>
       <a href="#servicios" class="btn-ghost">Ver servicios</a>
@@ -387,10 +427,10 @@
   <div class="hero-inner gauge-strip">
     <div class="gauge-item">
       <div class="gauge-num">24<span class="gauge-unit">/7</span></div>
-      <div class="gauge-label">Atención de urgencias</div>
+      <div class="gauge-label">Urgencias · recargo informado</div>
     </div>
     <div class="gauge-item">
-      <div class="gauge-num">100<span class="gauge-unit">%</span></div>
+      <div class="gauge-num">15<span class="gauge-unit">días</span></div>
       <div class="gauge-label">Garantía escrita</div>
     </div>
     <div class="gauge-item">
@@ -412,7 +452,7 @@
         <div class="svc-index">01</div>
         <div class="svc-content">
           <h3>Instalación residencial y comercial</h3>
-          <p>Instalación de equipos split, inverter y piso-techo en casas, departamentos, oficinas y locales. Relevamiento previo, cálculo de carga térmica y certificado de instalación por escrito.</p>
+          <p>Instalación de equipos split, inverter y piso-techo en casas, departamentos, oficinas y locales. Relevamiento previo, cálculo de carga térmica y constancia de instalación por escrito.</p>
           <span class="svc-tag">Hasta 18.000 FR</span>
         </div>
       </div>
@@ -518,7 +558,7 @@
   </div>
 </section>
 
-<section class="process">
+<section class="process" id="metodologia">
   <div class="sec-inner">
     <div class="sec-head">
       <div class="sec-eyebrow">Metodología</div>
@@ -537,14 +577,14 @@
         <div class="proc-dial">02</div>
         <div class="proc-text">
           <h4>Visita técnica y presupuesto detallado</h4>
-          <p>Coordinamos una visita sin cargo para evaluar el trabajo en sitio. El presupuesto es claro, por escrito y sin costos adicionales ocultos.</p>
+          <p>Coordinamos una visita técnica ($15.000, que se descuenta si realizás el trabajo con nosotros) para evaluar en sitio. El presupuesto es claro, por escrito y sin costos adicionales ocultos.</p>
         </div>
       </div>
       <div class="proc-item">
         <div class="proc-dial">03</div>
         <div class="proc-text">
           <h4>Ejecución y entrega con garantía</h4>
-          <p>Realizamos el trabajo con materiales de primera calidad. Cada servicio incluye garantía escrita y seguimiento post-instalación.</p>
+          <p>Realizamos el trabajo con materiales de primera calidad. Cada servicio incluye garantía escrita de 15 días y seguimiento post-instalación.</p>
         </div>
       </div>
     </div>
@@ -556,28 +596,28 @@
     <div class="sec-head">
       <div class="sec-eyebrow">Estándares</div>
       <h2 class="sec-title">Lo que distingue cada intervención</h2>
-      <p class="sec-sub">Formación técnica certificada y compromiso documentado en cada trabajo.</p>
+      <p class="sec-sub">Formación técnica y compromiso documentado en cada trabajo.</p>
     </div>
     <div class="std-grid">
       <div class="std-item">
         <div class="std-num">01</div>
-        <div class="std-label">Certificación oficial</div>
-        <div class="std-desc">Formación avalada por GCBA y UTN. Cumplimiento de normativa vigente.</div>
+        <div class="std-label">Formación técnica</div>
+        <div class="std-desc">Capacitación técnica profesional en climatización, refrigerantes y electricidad.</div>
       </div>
       <div class="std-item">
         <div class="std-num">02</div>
         <div class="std-label">Garantía documentada</div>
-        <div class="std-desc">Detalle escrito del trabajo realizado y materiales utilizados.</div>
+        <div class="std-desc">Detalle escrito del trabajo y materiales utilizados. Garantía de 15 días.</div>
       </div>
       <div class="std-item">
         <div class="std-num">03</div>
         <div class="std-label">Tiempo de respuesta</div>
-        <div class="std-desc">Atención en la primera hora hábil. Visita en menos de 48 horas.</div>
+        <div class="std-desc">Atención en la primera hora hábil. Visita coordinada dentro de las 48 horas.</div>
       </div>
       <div class="std-item">
         <div class="std-num">04</div>
         <div class="std-label">Transparencia total</div>
-        <div class="std-desc">Presupuesto previo. Sin costos adicionales no informados.</div>
+        <div class="std-desc">Presupuesto previo. Las urgencias tienen un recargo que se informa antes de ir.</div>
       </div>
     </div>
   </div>
@@ -587,9 +627,9 @@
   <div class="cta-inner">
     <div>
       <h2>¿Su hogar o local necesita servicio técnico de climatización?</h2>
-      <p>Atendemos clientes residenciales y comerciales en zona sur del GBA. Presupuesto sin cargo.</p>
+      <p>Atendemos clientes residenciales y comerciales en zona sur del GBA. Presupuesto previo por escrito.</p>
     </div>
-    <a href="#contacto" class="btn-light">Solicitar presupuesto →</a>
+    <a href="#contacto" class="btn-light">Solicitar presupuesto</a>
   </div>
 </div>
 
@@ -603,32 +643,32 @@
     <div class="contact-grid">
       <div>
         <div class="contact-meta">
-          <div class="meta-row"><span class="meta-icon">Tel.</span><span class="meta-val">+54 11 3563-0466</span></div>
-          <div class="meta-row"><span class="meta-icon">Mail</span><span class="meta-val">glaciar.climatizacion@gmail.com</span></div>
+          <div class="meta-row"><span class="meta-icon">Tel.</span><span class="meta-val"><a href="tel:+5491135630466">+54 11 3563-0466</a></span></div>
+          <div class="meta-row"><span class="meta-icon">Mail</span><span class="meta-val"><a href="mailto:glaciar.climatizacion@gmail.com">glaciar.climatizacion@gmail.com</a></span></div>
           <div class="meta-row"><span class="meta-icon">Zona</span><span class="meta-val">Lomas de Zamora y alrededores</span></div>
-          <div class="meta-row"><span class="meta-icon">Horario</span><span class="meta-val">Lun–Sáb 8:00–18:00 · Urgencias 24/7</span></div>
+          <div class="meta-row"><span class="meta-icon">Horario</span><span class="meta-val">Lun–Sáb 8:00–18:00 · Urgencias con recargo informado antes de ir</span></div>
         </div>
       </div>
       <div>
         <form class="cform" onsubmit="enviarWA(event);">
           <div>
-            <label class="field-label">Nombre y apellido</label>
-            <input type="text" id="f-nombre" placeholder="Nombre completo" />
+            <label class="field-label" for="f-nombre">Nombre y apellido</label>
+            <input type="text" id="f-nombre" autocomplete="name" placeholder="Nombre completo" />
           </div>
           <div>
-            <label class="field-label">Empresa u organización (opcional)</label>
+            <label class="field-label" for="f-empresa">Empresa u organización (opcional)</label>
             <input type="text" id="f-empresa" placeholder="Nombre de la empresa" />
           </div>
           <div>
-            <label class="field-label">Teléfono</label>
-            <input type="tel" id="f-telefono" placeholder="Número de contacto" />
+            <label class="field-label" for="f-telefono">Teléfono</label>
+            <input type="tel" id="f-telefono" autocomplete="tel" inputmode="tel" placeholder="Número de contacto" />
           </div>
           <div>
-            <label class="field-label">Correo electrónico</label>
-            <input type="email" id="f-email" placeholder="correo@ejemplo.com" />
+            <label class="field-label" for="f-email">Correo electrónico</label>
+            <input type="email" id="f-email" autocomplete="email" placeholder="correo@ejemplo.com" />
           </div>
           <div>
-            <label class="field-label">Tipo de servicio</label>
+            <label class="field-label" for="f-servicio">Tipo de servicio</label>
             <select id="f-servicio">
               <option value="" disabled selected>Seleccionar servicio</option>
               <option>Instalación residencial</option>
@@ -640,9 +680,10 @@
             </select>
           </div>
           <div>
-            <label class="field-label">Detalle</label>
+            <label class="field-label" for="f-detalle">Detalle</label>
             <textarea id="f-detalle" placeholder="Describa el servicio que necesita, incluyendo marca y modelo del equipo si lo conoce."></textarea>
           </div>
+          <p class="f-err" id="f-err" role="alert"></p>
           <button class="submit" type="submit">Enviar por WhatsApp</button>
         </form>
 
@@ -657,7 +698,7 @@
           const detalle  = document.getElementById('f-detalle').value.trim();
 
           if (!nombre || !telefono || !servicio) {
-            alert('Por favor completá al menos nombre, teléfono y tipo de servicio.');
+            document.getElementById('f-err').textContent = 'Completá al menos nombre, teléfono y tipo de servicio.';
             return;
           }
 
@@ -669,6 +710,7 @@
           msg += '🔧 *Servicio:* ' + servicio + '\n';
           if (detalle) msg += '📝 *Detalle:* ' + detalle;
 
+          document.getElementById('f-err').textContent = '';
           const url = 'https://wa.me/5491135630466?text=' + encodeURIComponent(msg);
           window.open(url, '_blank');
         }
@@ -678,7 +720,7 @@
   </div>
 </section>
 
-<a href="https://wa.me/5491135630466" class="wa-float" aria-label="WhatsApp">
+<a href="https://wa.me/5491135630466?text=Hola%20GlaciAR%2C%20quiero%20consultar%20por%20un%20servicio." class="wa-float" aria-label="WhatsApp">
   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.97L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0012.04 2zm5.81 14.13c-.24.68-1.41 1.3-1.94 1.38-.5.08-1.12.11-1.81-.11-.42-.13-.95-.31-1.64-.6-2.88-1.24-4.76-4.14-4.9-4.33-.14-.19-1.17-1.56-1.17-2.98s.73-2.11 1-2.4c.26-.29.57-.36.76-.36s.38 0 .54.01c.18.01.41-.07.64.49.24.58.81 2 .88 2.14.07.14.12.31.02.5-.09.19-.14.31-.28.47-.14.17-.29.37-.42.5-.14.13-.28.28-.12.55.16.27.71 1.17 1.52 1.9 1.05.94 1.93 1.23 2.21 1.37.27.13.43.11.59-.07.16-.18.68-.79.86-1.06.18-.27.36-.22.6-.13.25.09 1.57.74 1.84.87.27.13.45.2.51.31.07.12.07.66-.17 1.35z"/></svg>
 </a>
 
@@ -692,11 +734,7 @@
       <span class="footer-brand-text">Glaci<em>AR</em></span>
     </div>
     <div class="footer-sub">Climatización para hogares y comercios · Zona Sur, Buenos Aires · 2026</div>
-    <div class="footer-links">
-      <a href="#">Instagram</a>
-      <a href="#">WhatsApp</a>
-      <a href="#">Google Maps</a>
-    </div>
+    <div class="footer-contact"><a href="https://wa.me/5491135630466">WhatsApp</a><a href="tel:+5491135630466">+54 11 3563-0466</a><a href="mailto:glaciar.climatizacion@gmail.com">glaciar.climatizacion@gmail.com</a><span>Lun–Sáb 8:00–18:00</span></div>
   </div>
 </footer>
 
